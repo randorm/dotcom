@@ -14,7 +14,7 @@ const config: CodegenConfig = {
     "./lib/__codegen__/": {
       preset: "client",
       plugins: [],
-      presetConfig: <ClientPresetConfig>{
+      presetConfig: <ClientPresetConfig> {
         gqlTagName: "gql",
       },
     },

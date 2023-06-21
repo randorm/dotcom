@@ -20,7 +20,6 @@ const documents = {
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  *
- *
  * @example
  * ```ts
  * const query = gql(`query GetUser($id: ID!) { user(id: $id) { name } }`);
@@ -35,8 +34,11 @@ export function gql(source: string): unknown;
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(
-  source: "\n  query GetMe {\n    me {\n      id\n      username\n      views\n    }\n  }\n"
-): (typeof documents)["\n  query GetMe {\n    me {\n      id\n      username\n      views\n    }\n  }\n"];
+  source:
+    "\n  query GetMe {\n    me {\n      id\n      username\n      views\n    }\n  }\n",
+): (typeof documents)[
+  "\n  query GetMe {\n    me {\n      id\n      username\n      views\n    }\n  }\n"
+];
 
 export function gql(source: string) {
   return (documents as any)[source] ?? {};
