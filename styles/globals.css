@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.distributionSection {
+    @apply m-1 py-4 w-110 rounded-md bg-neutral-100 bg-opacity-50 border border-neutral-900 border-opacity-30 flex justify-around items-center;
+}
+
+.state {
+    @apply bg-opacity-40 w-20 text-center rounded-lg text-black text-opacity-70 text-[11px] font-normal ;
+}
+
+.bioSection {
+    @apply text-xs font-extralight mt-6 mb-3 p-3 w-9/12 rounded-md bg-opacity-30 border border-neutral-900 border-opacity-20;
+}
