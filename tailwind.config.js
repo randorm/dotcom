@@ -15,6 +15,9 @@ module.exports = {
       fontFamily: {
         'sans': ['Quicksand', ...defaultTheme.fontFamily.sans],
       },
+      fontSize: {
+        xxs: '0.6rem',
+      }
     }
   },
   plugins: [],
