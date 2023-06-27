@@ -42,6 +42,16 @@ export default function Home() {
           </div>
           <DistributionButton />
         </div>
+        <ul>
+          {distr.map((distributions, i) => (
+            <li key={i}>
+              <DistributionComponent
+                name={distributions.name}
+                state={distributions.state}
+              />
+            </li>
+          ))}
+        </ul>
       </div>
     </>
   );
