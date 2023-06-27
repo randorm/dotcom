@@ -1,18 +1,9 @@
-import { gql } from "@apollo/client";
 import DistributionComponent from "@/components/DistributionComponent";
 import DistributionButton from "@/components/DistributionButton";
+import { DISTRIBUTIONS } from "@/graphql/queries";
 import { Distribution } from "@/lib/__codegen__/graphql";
 import { useQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
-
-export const DISTRIBUTIONS = gql(`
-  query {
-    distributions {
-      name
-      state
-    }
-  }
-`);
 
 export default function Home() {
   const { data, error } = useQuery(DISTRIBUTIONS);
