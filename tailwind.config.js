@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 
-const defaultTheme = require('tailwindcss/defaultTheme')
+const defaultTheme = require("tailwindcss/defaultTheme");
 
 module.exports = {
   content: [
@@ -10,15 +10,15 @@ module.exports = {
   theme: {
     extend: {
       spacing: {
-        '110': '26rem',
+        "110": "26rem",
       },
       fontFamily: {
-        'sans': ['Quicksand', ...defaultTheme.fontFamily.sans],
+        "sans": ["Quicksand", ...defaultTheme.fontFamily.sans],
       },
       fontSize: {
-        xxs: '0.6rem',
-      }
-    }
+        xxs: "0.6rem",
+      },
+    },
   },
   plugins: [],
 };
