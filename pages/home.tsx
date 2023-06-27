@@ -1,7 +1,28 @@
-import Button from "@/components/Button";
-import Distribution from "@/components/Distribution";
+import { gql } from "@apollo/client";
+import DistributionComponent from "@/components/DistributionComponent";
 import DistributionButton from "@/components/DistributionButton";
+import { Distribution } from "@/lib/__codegen__/graphql";
+import { useQuery } from "@apollo/client";
+import { useEffect, useState } from "react";
+
+export const DISTRIBUTIONS = gql(`
+  query {
+    distributions {
+      name
+      state
+    }
+  }
+`);
+
 export default function Home() {
+  const { data, error } = useQuery(DISTRIBUTIONS);
+  const [distr, setDistr] = useState<Distribution[]>([]);
+  useEffect(() => {
+    if (data) {
+      setDistr(data.distributions);
+    }
+  }, [data]);
+
   return (
     <>
       <div className="flex justify-between">
@@ -20,30 +41,6 @@ export default function Home() {
             <p className="text-sm opacity-40">4 distributions</p>
           </div>
           <DistributionButton />
-        </div>
-        <div className="flex">
-          <Distribution
-            distributionName="Check-in 2024"
-            state="Preparing"
-            color="bg-purple-300"
-          />
-          <Distribution
-            distributionName="Check-in 2023"
-            state="Gathering"
-            color="bg-green-300"
-          />
-        </div>
-        <div className="flex">
-          <Distribution
-            distributionName="Check-in 2022"
-            state="Closed"
-            color="bg-blue-300"
-          />
-          <Distribution
-            distributionName="Check-in 2021"
-            state="Closed"
-            color="bg-blue-300"
-          />
         </div>
       </div>
     </>
