@@ -8,9 +8,11 @@ import { useEffect, useState } from "react";
 export default function Home() {
   const { data, error } = useQuery(DISTRIBUTIONS);
   const [distr, setDistr] = useState<Distribution[]>([]);
+  const [username, setUsername] = useState("");
   useEffect(() => {
     if (data) {
       setDistr(data.distributions);
+      setUsername(data.me.username);
     }
   }, [data]);
 
@@ -22,7 +24,7 @@ export default function Home() {
           src="./short-logo-t-b.png"
         />
         <div className="text-neutral-900 text-lg font-extralight m-5 mr-8">
-          Name Surname
+          {username}
         </div>
       </div>
       <div className="flex flex-col items-center justify-center mt-32">

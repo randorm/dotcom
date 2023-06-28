@@ -4,7 +4,6 @@ export const GET_ME = gql(`
     me {
       id
       username
-      views
     }
   }
 `);
@@ -14,6 +13,10 @@ export const DISTRIBUTIONS = gql(`
     distributions {
       name
       state
+    },
+    me {
+      id
+      username
     }
   }
 `);
