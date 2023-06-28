@@ -21,6 +21,18 @@ export const DISTRIBUTIONS = gql(`
   }
 `);
 
+export const GET_DISTRIBUTION = gql(`
+query($distributionId: Int!) {
+    distribution(distributionId: $distributionId) {
+      name
+    },
+    me {
+      id
+      username
+    }
+  }
+`)
+
 export const PROFILE = gql(`
 query($userId: Int!) {
     user(userId: $userId) {
@@ -33,4 +45,4 @@ query($userId: Int!) {
       }
     }
   }
-`)
+`);
