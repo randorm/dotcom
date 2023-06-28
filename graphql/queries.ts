@@ -17,7 +17,8 @@ export const DISTRIBUTIONS = gql(`
     me {
       id
       username
-    }
+    },
+    distributionCount
   }
 `);
 
