@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { GET_DISTRIBUTION } from "@/graphql/queries";
 import { Distribution } from "@/lib/__codegen__/graphql";
+import Link from "next/link";
 
 export default function CurrentDistribution() {
   const router = useRouter();
@@ -24,10 +25,12 @@ export default function CurrentDistribution() {
   return (
     <>
       <div className="flex justify-between">
-        <img
-          className="w-52 m-5"
-          src="../short-logo-t-b.png"
-        />
+        <Link href="/home">
+          <img
+            className="w-52 m-5"
+            src="../short-logo-t-b.png"
+          />
+        </Link>
         <div className="text-neutral-900 text-lg font-extralight m-5 mr-8">
           {username}
         </div>
