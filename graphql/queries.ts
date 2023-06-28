@@ -11,6 +11,7 @@ export const GET_ME = gql(`
 export const DISTRIBUTIONS = gql(`
   query {
     distributions {
+      id
       name
       state
     },

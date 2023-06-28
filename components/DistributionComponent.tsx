@@ -1,13 +1,15 @@
 import Button from "./Button";
 import { DistributionState } from "@/lib/__codegen__/graphql";
+import Link from "next/link";
 
 export interface IDistribution {
+  readonly id: number
   readonly name: string;
   readonly state: DistributionState;
 }
 
 export default function DistributionComponent(
-  { name, state }: IDistribution,
+  { id, name, state }: IDistribution,
 ) {
   return (
     <div className="distributionSection">
@@ -17,7 +19,8 @@ export default function DistributionComponent(
           {state}
         </div>
       </div>
-      <Button text="View" />
+      <Link href={`/distribution/${id}`}><Button text="View" /></Link>
+      
     </div>
   );
 }

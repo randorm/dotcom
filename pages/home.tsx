@@ -52,6 +52,7 @@ export default function Home() {
           {distr.map((distributions, i) => (
             <li key={i}>
               <DistributionComponent
+                id={distributions.id}
                 name={distributions.name}
                 state={distributions.state}
               />
