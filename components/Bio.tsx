@@ -1,15 +1,14 @@
-export interface PropsType {
-  name: string;
-  info: string;
-  bio: string;
+import { Profile } from "@/lib/__codegen__/graphql";
+export interface IBio {
+  profile: Profile;
 }
 
-export default function Bio({ name, info, bio }: PropsType) {
+export default function Bio({ profile }: IBio) {
   return (
     <div className="bioSection">
-      <p className="text-lg">{name}</p>
-      <p className="mb-3 opacity-40">{info}</p>
-      <div className="opacity-90 leading-normal">{bio}</div>
+      <p className="text-lg">{`${profile.firstName} ${profile.lastName}`}</p>
+      <p className="mb-3 opacity-40">{`${profile.gender} ${profile.birthday}`}</p>
+      <div className="opacity-90 leading-normal">{profile.bio}</div>
     </div>
   );
 }

@@ -17,3 +17,17 @@ export const DISTRIBUTIONS = gql(`
     }
   }
 `);
+
+export const PROFILE = gql(`
+query($userId: Int!) {
+    user(userId: $userId) {
+      profile {
+        firstName
+        lastName
+        gender
+        birthday
+        bio
+      }
+    }
+  }
+`)
