@@ -1,6 +1,6 @@
 export interface PropsType {
-  question: string;
-  answer: string;
+  readonly question: string;
+  readonly answer: string;
 }
 
 export default function Question({ question, answer }: PropsType) {
