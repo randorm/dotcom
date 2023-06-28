@@ -31,7 +31,7 @@ export default function Home() {
         <div className="flex items-center w-4/6 justify-between mb-4">
           <div className="font-extralight text-xl">
             <p>Distributions</p>
-            <p className="text-sm opacity-40">4 distributions</p>
+            <p className="text-sm opacity-40">{distr.length}</p>
           </div>
           <DistributionButton />
         </div>
