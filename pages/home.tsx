@@ -5,13 +5,13 @@ import { CREATE_DISTRIBUTION } from "@/graphql/mutations"
 import { Distribution } from "@/lib/__codegen__/graphql";
 import { useMutation, useQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
-import Link from "next/link";
 
 export default function Home() {
   const { data, error } = useQuery(DISTRIBUTIONS);
   const [distr, setDistr] = useState<Distribution[]>([]);
   const [username, setUsername] = useState("");
   const [distributionNumber, setDistributionNumber] = useState("");
+
   useEffect(() => {
     if (data) {
       setDistr(data.distributions);
@@ -20,7 +20,7 @@ export default function Home() {
     }
   }, [data]);
 
-  const [createDistribution, { }] = useMutation(CREATE_DISTRIBUTION);
+  const [createDistribution, { data: mutation }] = useMutation(CREATE_DISTRIBUTION);
   const addDistribution = () => {
     createDistribution({
       variables: {
@@ -28,7 +28,13 @@ export default function Home() {
       },
     });
   };
-  // pass returning id from mutation to the link component
+
+  useEffect(() => {
+    if (mutation) {
+      window.location.href = `/distribution/${mutation.createDistribution.id}`
+    }
+  }, [mutation]);
+
   return (
     <>
       <div className="flex justify-between">
@@ -40,13 +46,13 @@ export default function Home() {
           {username}
         </div>
       </div>
-      <div className="flex flex-col items-center justify-center mt-32">
+      <div className="flex flex-col items-center justify-center mt-32 mb-24">
         <div className="flex items-center w-4/6 justify-between mb-4">
           <div className="font-extralight text-xl">
             <p>Distributions</p>
             <p className="text-sm opacity-40">{distributionNumber}</p>
           </div> 
-          <Link href="/distribution" onClick={addDistribution}><DistributionButton /></Link>
+          <button onClick={addDistribution}><DistributionButton /></button>
         </div>
         <ul>
           {distr.map((distributions, i) => (
