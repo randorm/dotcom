@@ -1,5 +1,5 @@
 import DistributionComponent from "@/components/DistributionComponent";
-import DistributionButton from "@/components/DistributionButton";
+import AddButton from "@/components/AddButton";
 import { DISTRIBUTIONS } from "@/graphql/queries";
 import { CREATE_DISTRIBUTION } from "@/graphql/mutations"
 import { Distribution } from "@/lib/__codegen__/graphql";
@@ -52,7 +52,7 @@ export default function Home() {
             <p>Distributions</p>
             <p className="text-sm opacity-40">{distributionNumber}</p>
           </div> 
-          <button onClick={addDistribution}><DistributionButton imageSrc="./plus.png" text="New Distribution" /></button>
+          <button onClick={addDistribution}><AddButton imageSrc="./plus.png" text="New Distribution" /></button>
         </div>
         <ul className="grid grid-cols-2">
           {distr.map((distributions, i) => (
