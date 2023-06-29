@@ -18,6 +18,9 @@ module.exports = {
       fontSize: {
         xxs: "0.6rem",
       },
+      gap: {
+        "110": "34rem",
+      },
     },
   },
   plugins: [],

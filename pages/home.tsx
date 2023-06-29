@@ -47,14 +47,14 @@ export default function Home() {
         </div>
       </div>
       <div className="flex flex-col items-center justify-center mt-32 mb-24">
-        <div className="flex items-center w-4/6 justify-between mb-4">
+        <div className="grid grid-cols-2 gap-x-110 mb-4">
           <div className="font-extralight text-xl">
             <p>Distributions</p>
             <p className="text-sm opacity-40">{distributionNumber}</p>
           </div> 
-          <button onClick={addDistribution}><DistributionButton /></button>
+          <button onClick={addDistribution}><DistributionButton imageSrc="./plus.png" text="New Distribution" /></button>
         </div>
-        <ul>
+        <ul className="grid grid-cols-2">
           {distr.map((distributions, i) => (
             <li key={i}>
               <DistributionComponent
