@@ -1,7 +1,7 @@
 export default function ChoiseQuestion() {
   return (
-    <div className="area w-6/12">
-      <div className="flex justify-between items-center mb-1 px-2">
+    <div className="area">
+      <div className="flex justify-between items-center mb-1 p-1">
         <p>Choise question</p>
         <div className="grid grid-cols-3">
           <img src="../edit.svg" alt="" />
@@ -9,7 +9,7 @@ export default function ChoiseQuestion() {
           <img src="../delete.svg" alt="" />
         </div>
       </div>
-      <div className="grid grid-cols-2 gap-52 px-2">
+      <div className="grid grid-cols-2 gap-52 p-1">
         <div>
           <div className="flex items-center">
             <img src="../option.svg" alt="" />

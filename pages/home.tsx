@@ -1,7 +1,7 @@
 import DistributionComponent from "@/components/DistributionComponent";
 import AddButton from "@/components/AddButton";
 import { DISTRIBUTIONS } from "@/graphql/queries";
-import { CREATE_DISTRIBUTION } from "@/graphql/mutations"
+import { CREATE_DISTRIBUTION } from "@/graphql/mutations";
 import { Distribution } from "@/lib/__codegen__/graphql";
 import { useMutation, useQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
@@ -20,7 +20,9 @@ export default function Home() {
     }
   }, [data]);
 
-  const [createDistribution, { data: mutation }] = useMutation(CREATE_DISTRIBUTION);
+  const [createDistribution, { data: mutation }] = useMutation(
+    CREATE_DISTRIBUTION,
+  );
   const addDistribution = () => {
     createDistribution({
       variables: {
@@ -31,7 +33,7 @@ export default function Home() {
 
   useEffect(() => {
     if (mutation) {
-      window.location.href = `/distribution/${mutation.createDistribution.id}`
+      window.location.href = `/distribution/${mutation.createDistribution.id}`;
     }
   }, [mutation]);
 
@@ -51,8 +53,10 @@ export default function Home() {
           <div className="font-extralight text-xl">
             <p>Distributions</p>
             <p className="text-sm opacity-40">{distributionNumber}</p>
-          </div> 
-          <button onClick={addDistribution}><AddButton imageSrc="./plus.png" text="New Distribution" /></button>
+          </div>
+          <button onClick={addDistribution}>
+            <AddButton imageSrc="./plus.png" text="New Distribution" />
+          </button>
         </div>
         <ul className="grid grid-cols-2">
           {distr.map((distributions, i) => (

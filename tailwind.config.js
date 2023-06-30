@@ -19,7 +19,7 @@ module.exports = {
         xxs: "0.6rem",
       },
       gap: {
-        "110": "34rem",
+        "110": "52rem",
       },
     },
   },

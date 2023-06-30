@@ -3,7 +3,7 @@ import { DistributionState } from "@/lib/__codegen__/graphql";
 export default function SideBar() {
   const state = DistributionState.Preparing;
   return (
-    <div className="w-2/12">
+    <div className="">
       <div className="area flex flex-col justify-center ">
         <img className="px-8 mb-2" src="../progress-bar.svg" alt="" />
         <div className="flex justify-around">
