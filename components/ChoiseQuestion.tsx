@@ -3,7 +3,7 @@ export default function ChoiseQuestion() {
     <div className="area">
       <div className="flex justify-between items-center mb-1 p-1">
         <p>Choise question</p>
-        <div className="grid grid-cols-3">
+        <div className="grid grid-cols-3 gap-1">
           <img src="../edit.svg" alt="" />
           <img src="../swap.svg" alt="" />
           <img src="../delete.svg" alt="" />
@@ -21,11 +21,11 @@ export default function ChoiseQuestion() {
           </div>
         </div>
         <div className="text-sm">
-          <div className="flex items-center">
-            <img src="../checkbox.svg" alt="" />
+          <div className="flex items-center align-middle">
+          <input type="checkbox" className="default:ring-2 ..." />
             <div className="ml-1 text-sm">Required</div>
           </div>
-          <div className="flex items-center">
+          <div className="flex items-center align-middle">
             <img src="../drop-down-menu.svg" alt="" />
             <div className="ml-1 text-sm">Multiple choice</div>
           </div>

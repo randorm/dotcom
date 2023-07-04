@@ -1,10 +1,11 @@
 import Link from "next/link";
 
 interface IHeader {
-    readonly username: string
+    readonly firstname: string
+    readonly lastname: string
 }
 
-export default function Header({username}: IHeader) {
+export default function Header({firstname, lastname}: IHeader) {
   return (
     <div className="flex justify-between">
       <Link href="/home">
@@ -14,7 +15,7 @@ export default function Header({username}: IHeader) {
         />
       </Link>
       <div className="text-neutral-900 text-lg font-extralight m-5 mr-8">
-        {username}
+        {firstname} {lastname}
       </div>
     </div>
   );

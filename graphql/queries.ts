@@ -9,28 +9,32 @@ export const GET_ME = gql(`
 `);
 
 export const DISTRIBUTIONS = gql(`
-  query {
+  query($userId: Int!) {
     distributions {
       id
       name
       state
     },
-    me {
-      id
-      username
+    user(userId: $userId) {
+      profile {
+        firstName
+        lastName
+      }
     },
     distributionCount
   }
 `);
 
 export const GET_DISTRIBUTION = gql(`
-query($distributionId: Int!) {
+query($distributionId: Int!, $userId: Int!) {
     distribution(distributionId: $distributionId) {
       name
     },
-    me {
-      id
-      username
+    user(userId: $userId) {
+      profile {
+        firstName
+        lastName
+      }
     }
   }
 `)

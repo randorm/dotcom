@@ -14,24 +14,26 @@ export default function CurrentDistribution() {
   const { id } = router.query;
 
   const { data, error } = useQuery(GET_DISTRIBUTION, {
-    variables: { distributionId: Number(id) },
+    variables: { distributionId: Number(id), userId: 1 },
   });
 
   const [distr, setDistr] = useState<Distribution>({} as Distribution);
-  const [username, setUsername] = useState("");
+  const [firstname, setFirstname] = useState("");
+  const [lastname, setLastname] = useState("");
   useEffect(() => {
     if (data) {
       setDistr(data.distribution);
-      setUsername(data.me.username);
+      setFirstname(data.user.profile.firstName);
+      setLastname(data.user.profile.lastName);
     }
   }, [data]);
 
   return (
     <>
-      <Header username={username}></Header>
+      <Header firstname={firstname} lastname={lastname}></Header>
       <div className="flex flex-col mt-20">
         <div className="grid justify-items-center">
-          <div className="grid grid-cols-2 mb-4 gap-x-110">
+          <div className="grid grid-cols-2 mb-4 gap-x-150">
             <div className="font-extralight text-xl">
               <p>{distr.name}</p>
               <p className="text-sm opacity-40">2 questions</p>
@@ -40,12 +42,12 @@ export default function CurrentDistribution() {
               <AddButton imageSrc="../plus.png" text="New Question" />
             </button>
           </div>
-          <div className="flex w-8/12 justify-items-center">
-            <div className="flex-none flex-col w-9/12">
+          <div className="flex w-10/12 justify-items-center">
+            <div className="flex-none flex-col w-8/12">
               <ChoiseQuestion />
               <TextQuestion />
             </div>
-            <div className="flex-auto w-7/12">
+            <div className="flex-auto w-9/12">
               <SideBar />
             </div>
           </div>

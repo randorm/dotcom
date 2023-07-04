@@ -15,7 +15,7 @@ export default function DistributionComponent(
     <div className="distributionSection">
       <div className="ml-4">
         <p className="">{name}</p>
-        <div className={`text-center text-xxs rounded-md w-16 ${ state == DistributionState.Preparing ? "bg-purple-300" : state == DistributionState.Gathering ? "bg-green-300" : state == DistributionState.Answering ? "bg-red-900" : state == DistributionState.Closed ? "bg-blue-300" : ""}`}>
+        <div className={`text-center text-xxs rounded-md w-16 ${ state == DistributionState.Preparing ? "bg-purple-300" : state == DistributionState.Gathering ? "bg-green-300" : state == DistributionState.Answering ? "bg-orange-300" : state == DistributionState.Closed ? "bg-blue-300" : ""}`}>
           {state}
         </div>
       </div>

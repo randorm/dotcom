@@ -20,7 +20,11 @@ export default function Feed() {
       <Bio
         profile={profile}
       />
-      <Question question="What is your name?" answer="John" />
+      <Question question="Where are you from?" answer="Moskow" />
+      <Question question="What is your favourite fruit?" answer="Banana" />
+      <Question question="Do you go to the gym?" answer="Yes" />
+      <Question question="Are you smoking?" answer="No" />
+      <Question question="Do you like partying?" answer="Absolutely" />
       <SelectionButton />
     </div>
   );

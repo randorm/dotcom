@@ -5,12 +5,17 @@ export default function SideBar() {
   return (
     <div className="">
       <div className="area flex flex-col justify-center ">
-        <img className="px-8 mb-2" src="../progress-bar.svg" alt="" />
+        <img className="px-7 mb-2" src="../progress-bar.svg" alt="" />
         <div className="flex justify-around">
           <div
             className={`text-center text-xxs rounded-md w-16 bg-purple-300`}
           >
             PREPARING
+          </div>
+          <div
+            className={`text-center text-xxs rounded-md w-16 bg-orange-300`}
+          >
+            ANSWERING
           </div>
           <div
             className={`text-center text-xxs rounded-md w-16 bg-green-300`}
@@ -24,9 +29,9 @@ export default function SideBar() {
           </div>
         </div>
       </div>
-      <div className="area">Video</div>
+      <div className="area bg-neutral-900 h-44 opacity-20 text-center"><p className="text-white">VIDEO GUIDE</p></div>
       <div className="area">
-        <div className="grid grid-flow-col justify-stretch grid-cols-2">
+        <div className="grid grid-flow-col justify-stretch grid-cols-2 gap-1">
           <div className={"deleteBtn"}>
             <p className={`text-red-400 text-sm font-extralight`}>
               Delete
