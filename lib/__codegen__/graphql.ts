@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/core';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -137,6 +136,7 @@ export type Group = {
   createdAt: Scalars['Date']['output'];
   distribution: ClosedDistribution;
   id: Scalars['Int']['output'];
+  memberCount: Scalars['Int']['output'];
   members: Array<User>;
 };
 
@@ -164,7 +164,6 @@ export type MarkViewedUpdate = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  addDistributionField: PreparingDistribution;
   createChoiceField: ChoiceField;
   createDistribution: PreparingDistribution;
   createTextField: TextField;
@@ -172,20 +171,14 @@ export type Mutation = {
   joinDistribution: JoinDistributionUpdate;
   leaveDistribution: LeaveDistributionUpdate;
   markViewed: MarkViewedUpdate;
-  removeDistributionField: PreparingDistribution;
   setChoiceAnswer: SetChoiceAnswerUpdate;
   setTextAnswer: SetTextAnswerUpdate;
   subscribe: SubscribeUpdate;
   unsubscribe: UnsubscribeUpdate;
+  updateDistributionFields: PreparingDistribution;
   updateDistributionName: Distribution;
   updateDistributionState: Distribution;
   updateUserProfile: User;
-};
-
-
-export type MutationAddDistributionFieldArgs = {
-  distributionId: Scalars['Int']['input'];
-  fieldId: Scalars['Int']['input'];
 };
 
 
@@ -230,12 +223,6 @@ export type MutationMarkViewedArgs = {
 };
 
 
-export type MutationRemoveDistributionFieldArgs = {
-  distributionId: Scalars['Int']['input'];
-  fieldId: Scalars['Int']['input'];
-};
-
-
 export type MutationSetChoiceAnswerArgs = {
   fieldId: Scalars['Int']['input'];
   indices: Array<Scalars['Int']['input']>;
@@ -255,6 +242,12 @@ export type MutationSubscribeArgs = {
 
 export type MutationUnsubscribeArgs = {
   userId: Scalars['Int']['input'];
+};
+
+
+export type MutationUpdateDistributionFieldsArgs = {
+  distributionId: Scalars['Int']['input'];
+  fieldIds: Array<Scalars['Int']['input']>;
 };
 
 
@@ -440,17 +433,3 @@ export type User = {
   viewedCount: Scalars['Int']['output'];
   views: Scalars['Int']['output'];
 };
-
-export type DistributionQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type DistributionQuery = { __typename?: 'Query', distributions: Array<{ __typename?: 'AnsweringDistribution', name: string, state: DistributionState } | { __typename?: 'ClosedDistribution', name: string, state: DistributionState } | { __typename?: 'GatheringDistribution', name: string, state: DistributionState } | { __typename?: 'PreparingDistribution', name: string, state: DistributionState }> };
-
-export type GetMeQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type GetMeQuery = { __typename?: 'Query', me: { __typename?: 'User', id: number, username: string, views: number } };
-
-
-export const DistributionDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Distribution"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"distributions"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"state"}}]}}]}}]} as unknown as DocumentNode<DistributionQuery, DistributionQueryVariables>;
-export const GetMeDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetMe"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"me"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"username"}},{"kind":"Field","name":{"kind":"Name","value":"views"}}]}}]}}]} as unknown as DocumentNode<GetMeQuery, GetMeQueryVariables>;
