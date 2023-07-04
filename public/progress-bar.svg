@@ -1,8 +1,10 @@
-<svg width="232" height="20" viewBox="0 0 232 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M19.4 9.99994C19.4 15.1914 15.1915 19.3999 10 19.3999C4.80852 19.3999 0.6 15.1914 0.6 9.99994C0.6 4.80846 4.80852 0.599936 10 0.599936C15.1915 0.599936 19.4 4.80846 19.4 9.99994Z" stroke="#181818" stroke-width="1.2"/>
-<circle cx="113" cy="10" r="9.4" stroke="#181818" stroke-opacity="0.5" stroke-width="1.2"/>
-<circle cx="222" cy="10" r="9.4" stroke="#181818" stroke-opacity="0.5" stroke-width="1.2"/>
-<line x1="19" y1="9.49994" x2="103" y2="9.49994" stroke="#181818" stroke-opacity="0.5"/>
-<line x1="123" y1="9.49994" x2="212" y2="9.49994" stroke="#181818" stroke-opacity="0.5"/>
-<circle cx="10" cy="9.99994" r="5" fill="#181818"/>
+<svg width="200" height="20" viewBox="0 0 250 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M19.4 10C19.4 15.1915 15.1915 19.4 10 19.4C4.80852 19.4 0.6 15.1915 0.6 10C0.6 4.80852 4.80852 0.599997 10 0.599997C15.1915 0.599997 19.4 4.80852 19.4 10Z" stroke="#181818" stroke-width="1.2"/>
+<circle cx="88" cy="10" r="9.4" stroke="#181818" stroke-opacity="0.5" stroke-width="1.2"/>
+<circle cx="166" cy="10" r="9.4" stroke="#181818" stroke-opacity="0.5" stroke-width="1.2"/>
+<circle cx="235" cy="10" r="9.4" stroke="#181818" stroke-opacity="0.5" stroke-width="1.2"/>
+<path d="M20 10L78 10" stroke="#181818" stroke-opacity="0.5"/>
+<path d="M176 10L225 10" stroke="#181818" stroke-opacity="0.5"/>
+<path d="M97.5 10L156 10" stroke="#181818" stroke-opacity="0.5"/>
+<circle cx="10" cy="10" r="5" fill="#181818"/>
 </svg>
