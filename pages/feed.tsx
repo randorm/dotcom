@@ -2,19 +2,23 @@ import Bio from "@/components/Bio";
 import { ChoiceQuestion, TextQuestion } from "@/components/Question";
 import SelectionButton from "@/components/SelectionButton";
 import { FEED } from "@/graphql/queries";
-import { ChoiceAnswer, Profile, TextAnswer } from "@/lib/__codegen__/graphql";
+import {
+  ChoiceAnswer,
+  Field,
+  Profile,
+  TextAnswer,
+} from "@/lib/__codegen__/graphql";
 import { useQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
 
 export default function Feed() {
   function showNextUser() {
-    if (data.recommend.length > userNumber+1) {
-      setUserNumber(userNumber + 1)
+    if (data.recommend.length > userNumber + 1) {
+      setUserNumber(userNumber + 1);
     } else {
-      setUserNumber(0)
-      refetch({ distributionId: 539 })
+      setUserNumber(0);
+      refetch({ distributionId: 539 });
     }
-    
   }
 
   const { data, error, refetch } = useQuery(FEED, {
@@ -24,12 +28,38 @@ export default function Feed() {
   const [textAnswers, setTextAnswer] = useState<TextAnswer[]>();
   const [choiceAnswers, setChoiceAnswer] = useState<ChoiceAnswer[]>();
   const [userNumber, setUserNumber] = useState(0);
+  const textAnswersArray: TextAnswer[] = [];
+  const choiceAnswersArray: ChoiceAnswer[] = [];
+  const distributionQuestionsArray: number[] = [];
   useEffect(() => {
     if (data) {
+      data.distribution.fields?.map((field: Field) => (
+        distributionQuestionsArray.push(field.id)
+      ));
+
+      for (var i = 0; i < data.recommend[userNumber].answers.length; i++) {
+        if (
+          data.recommend[userNumber].answers[i].value &&
+          distributionQuestionsArray.includes(
+            data.recommend[userNumber].answers[i].field.id,
+          )
+        ) {
+          textAnswersArray.push(data.recommend[userNumber].answers[i]);
+        } else if (
+          data.recommend[userNumber].answers[i].indices &&
+          distributionQuestionsArray.includes(
+            data.recommend[userNumber].answers[i].field.id,
+          )
+        ) {
+          choiceAnswersArray.push(data.recommend[userNumber].answers[i]);
+        } else {
+          continue;
+        }
+      }
+
       setProfile(data.recommend[userNumber].profile);
-      setTextAnswer(data.recommend[userNumber].answers);
-      setChoiceAnswer(data.recommend[userNumber].answers);
-      console.log(data.recommend[userNumber].answers);
+      setTextAnswer(textAnswersArray);
+      setChoiceAnswer(choiceAnswersArray);
     }
   }, [data, userNumber]);
 
@@ -39,20 +69,20 @@ export default function Feed() {
         profile={profile}
       />
       {textAnswers?.map((textAnswer) => (
-        textAnswer.value &&
         <TextQuestion
           question={textAnswer.field.question}
           answer={textAnswer.value}
         />
       ))}
       {choiceAnswers?.map((choiceAnswer) => (
-        choiceAnswer.indices &&
         <ChoiceQuestion
           question={choiceAnswer.field.question}
           indeces={choiceAnswer.indices}
         />
       ))}
-      <button className="fixed bottom-0" onClick={showNextUser}><SelectionButton /></button>
+      <button className="fixed bottom-0" onClick={showNextUser}>
+        <SelectionButton />
+      </button>
     </div>
   );
 }
