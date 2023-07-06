@@ -1,31 +1,58 @@
 import Bio from "@/components/Bio";
-import Question from "@/components/Question";
+import { ChoiceQuestion, TextQuestion } from "@/components/Question";
 import SelectionButton from "@/components/SelectionButton";
-import { PROFILE } from "@/graphql/queries";
-import { Profile } from "@/lib/__codegen__/graphql";
+import { FEED } from "@/graphql/queries";
+import { ChoiceAnswer, Profile, TextAnswer } from "@/lib/__codegen__/graphql";
 import { useQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
+
 export default function Feed() {
-  const { data, error } = useQuery(PROFILE, {
-    variables: { userId: 1 }
+  function showNextUser() {
+    if (data.recommend.length > userNumber+1) {
+      setUserNumber(userNumber + 1)
+    } else {
+      setUserNumber(0)
+      refetch({ distributionId: 539 })
+    }
+    
+  }
+
+  const { data, error, refetch } = useQuery(FEED, {
+    variables: { distributionId: 539 },
   });
   const [profile, setProfile] = useState<Profile>({} as Profile);
+  const [textAnswers, setTextAnswer] = useState<TextAnswer[]>();
+  const [choiceAnswers, setChoiceAnswer] = useState<ChoiceAnswer[]>();
+  const [userNumber, setUserNumber] = useState(0);
   useEffect(() => {
     if (data) {
-      setProfile(data.user.profile);
+      setProfile(data.recommend[userNumber].profile);
+      setTextAnswer(data.recommend[userNumber].answers);
+      setChoiceAnswer(data.recommend[userNumber].answers);
+      console.log(data.recommend[userNumber].answers);
     }
-  }, [data]);
+  }, [data, userNumber]);
+
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center last:mb-10">
       <Bio
         profile={profile}
       />
-      <Question question="Where are you from?" answer="Moskow" />
-      <Question question="What is your favourite fruit?" answer="Banana" />
-      <Question question="Do you go to the gym?" answer="Yes" />
-      <Question question="Are you smoking?" answer="No" />
-      <Question question="Do you like partying?" answer="Absolutely" />
-      <SelectionButton />
+      {textAnswers?.map((textAnswer) => (
+        textAnswer.value &&
+        <TextQuestion
+          question={textAnswer.field.question}
+          answer={textAnswer.value}
+        />
+      ))}
+      {choiceAnswers?.map((choiceAnswer) => (
+        choiceAnswer.indices &&
+        <ChoiceQuestion
+          question={choiceAnswer.field.question}
+          indeces={choiceAnswer.indices}
+        />
+      ))}
+      <button className="fixed bottom-0" onClick={showNextUser}><SelectionButton /></button>
     </div>
   );
 }
