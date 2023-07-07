@@ -1,4 +1,5 @@
 import Bio from "@/components/Bio";
+import Loading from "@/components/Loading";
 import { ChoiceQuestion, TextQuestion } from "@/components/Question";
 import SelectionButton from "@/components/SelectionButton";
 import { FEED } from "@/graphql/queries";
@@ -9,20 +10,24 @@ import {
   TextAnswer,
 } from "@/lib/__codegen__/graphql";
 import { useQuery } from "@apollo/client";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 export default function Feed() {
+  const router = useRouter();
+  const { id } = router.query;
+  
   function showNextUser() {
     if (data.recommend.length > userNumber + 1) {
       setUserNumber(userNumber + 1);
     } else {
       setUserNumber(0);
-      refetch({ distributionId: 539 });
+      refetch({ distributionId: Number(id) });
     }
   }
 
-  const { data, error, refetch } = useQuery(FEED, {
-    variables: { distributionId: 539 },
+  const { data, error, loading, refetch } = useQuery(FEED, {
+    variables: { distributionId: Number(id) },
   });
   const [profile, setProfile] = useState<Profile>({} as Profile);
   const [textAnswers, setTextAnswer] = useState<TextAnswer[]>();
@@ -65,6 +70,7 @@ export default function Feed() {
 
   return (
     <div className="flex flex-col items-center last:mb-10">
+      {loading && <Loading />}
       <Bio
         profile={profile}
       />
