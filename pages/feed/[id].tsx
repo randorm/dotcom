@@ -33,6 +33,7 @@ export default function Feed() {
   const [textAnswers, setTextAnswer] = useState<TextAnswer[]>();
   const [choiceAnswers, setChoiceAnswer] = useState<ChoiceAnswer[]>();
   const [userNumber, setUserNumber] = useState(0);
+  const [userId, setUserId] = useState(0);
   const textAnswersArray: TextAnswer[] = [];
   const choiceAnswersArray: ChoiceAnswer[] = [];
   const distributionQuestionsArray: number[] = [];
@@ -65,6 +66,7 @@ export default function Feed() {
       setProfile(data.recommend[userNumber].profile);
       setTextAnswer(textAnswersArray);
       setChoiceAnswer(choiceAnswersArray);
+      setUserId(data.recommend[userNumber].id);
     }
   }, [data, userNumber]);
 
@@ -87,7 +89,7 @@ export default function Feed() {
         />
       ))}
       <button className="fixed bottom-0" onClick={showNextUser}>
-        <SelectionButton />
+        <SelectionButton userId={userId}/>
       </button>
     </div>
   );
