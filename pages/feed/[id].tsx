@@ -1,4 +1,5 @@
 import Bio from "@/components/Bio";
+import EmptyFeed from "@/components/EmptyFeed";
 import Loading from "@/components/Loading";
 import { ChoiceQuestion, TextQuestion } from "@/components/Question";
 import SelectionButton from "@/components/SelectionButton";
@@ -72,6 +73,7 @@ export default function Feed() {
 
   return (
     <div className="flex flex-col items-center last:mb-10">
+      {data?.recommend.length == 0 && <EmptyFeed />}
       {loading && <Loading />}
       <Bio
         profile={profile}
