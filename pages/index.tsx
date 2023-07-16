@@ -1,7 +1,30 @@
 import React from "react";
-import TelegramButton from "@/components/TelegramButton";
+import ReactDOM from "react-dom";
+import TelegramLoginButton, { TelegramUser } from "@/components/TelegramButton";
+import { authUsingTelegram } from "@/lib/auth";
+import { useRouter } from "next/router";
+import { useLocalStorage } from "usehooks-ts";
 
+interface IUser {
+  readonly first_name: string;
+  readonly last_name: string;
+  readonly id: string;
+  readonly username: string;
+}
 export default function Login() {
+  const router = useRouter();
+  const [authToken, setAuthToken] = useLocalStorage<string | undefined>('token', undefined)
+
+  const onTelegramAuth = async (user: TelegramUser) => {
+    const token = await authUsingTelegram(user);
+    setAuthToken(token)
+
+    if (token !== undefined) {
+      router.push("https://t.me/randorm_bot/");
+    } else {
+      router.push("https://t.me/randorm_bot/");
+    }
+  };
   return (
     <div
       className={`flex flex-col items-center absolute inset-x-0 inset-y-1/3`}
@@ -10,8 +33,10 @@ export default function Login() {
       <p className="mb-20 text-black text-opacity-90 text-base font-light">
         Find your best roommates.
       </p>
-      <TelegramButton />
-      {/* {JSON.stringify(data)} */}
+      <TelegramLoginButton
+        botName="randorm_bot"
+        dataOnauth={onTelegramAuth}
+      />
     </div>
   );
 }

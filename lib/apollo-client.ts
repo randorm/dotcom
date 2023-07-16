@@ -7,8 +7,9 @@ import {
 import { setContext } from "@apollo/client/link/context";
 import { onError } from "@apollo/client/link/error";
 import { RetryLink } from "@apollo/client/link/retry";
+import { useLocalStorage } from "usehooks-ts";
 
-const ENDPOINT = "https://randorm.deno.dev/";
+const ENDPOINT = "https://api.randorm.com/graphql/";
 
 // Link to send the request to the GraphQL server
 const httpLink = createHttpLink({
@@ -34,7 +35,7 @@ const addAuthLink = (token?: string) =>
       return {
         headers: {
           ...headers,
-          authorization: `Bearer ${token}`,
+          //authorization: `Bearer ${token}`,
         },
       };
     } else {
@@ -60,7 +61,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 
 // Hook to create a new Apollo client
 export const useApolloClient = () => {
-  const authToken = "2";
+  const [authToken] = useLocalStorage('token', undefined)
   const client = new ApolloClient({
     link: from([addAuthLink(authToken), errorLink, retryLink, httpLink]),
     cache: new InMemoryCache(),

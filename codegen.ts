@@ -1,7 +1,7 @@
 import { CodegenConfig } from "@graphql-codegen/cli";
 import { ClientPresetConfig } from "@graphql-codegen/client-preset";
 
-const ENDPOINT = "https://randorm.deno.dev/";
+const ENDPOINT = "https://api.randorm.com/graphql/";
 
 const config: CodegenConfig = {
   schema: ENDPOINT,
