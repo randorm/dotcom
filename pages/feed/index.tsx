@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import logo from "../public/short-logo-t-b.png"
+import logo from "../../public/short-logo-t-b.png"
 
 export default function FeedDefault() {
     return (
