@@ -75,35 +75,40 @@ export default function Feed() {
       setUserId(data.recommend[userNumber].id);
     }
     if (me) {
-      setId(me.me.id)
+      setId(me.me.id);
     }
   }, [data, userNumber, me]);
 
   return (
     <div className="flex flex-col items-center last:mb-10">
-      {(data?.recommend.length == 0 || data?.recommend.length == undefined) && <EmptyFeed />}
       {loading && <Loading />}
-      <Bio
-        profile={profile}
-      />
-      {textAnswers?.map((textAnswer) => (
-        <TextQuestion
-          key={textAnswer.field.id}
-          question={textAnswer.field.question}
-          answer={textAnswer.value}
-        />
-      ))}
-      {choiceAnswers?.map((choiceAnswer) => (
-        <ChoiceQuestion
-          key={choiceAnswer.field.id}
-          question={choiceAnswer.field.question}
-          indeces={choiceAnswer.indices}
-        />
-      ))}
-      <p>{idd}kjhlkjhljk</p>
-      <button className="fixed bottom-0" onClick={showNextUser}>
-        <SelectionButton userId={userId} />
-      </button>
+      {(data?.recommend.length == 0 || data?.recommend.length == undefined)
+        ? <EmptyFeed />
+        : (
+          <>
+            <Bio
+              profile={profile}
+            />
+            {textAnswers?.map((textAnswer) => (
+              <TextQuestion
+                key={textAnswer.field.id}
+                question={textAnswer.field.question}
+                answer={textAnswer.value}
+              />
+            ))}
+            {choiceAnswers?.map((choiceAnswer) => (
+              <ChoiceQuestion
+                key={choiceAnswer.field.id}
+                question={choiceAnswer.field.question}
+                indeces={choiceAnswer.indices}
+              />
+            ))}
+            <p>{idd}kjhlkjhljk</p>
+            <button className="fixed bottom-0" onClick={showNextUser}>
+              <SelectionButton userId={userId} />
+            </button>
+          </>
+        )}
     </div>
   );
 }
