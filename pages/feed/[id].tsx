@@ -81,7 +81,7 @@ export default function Feed() {
 
   return (
     <div className="flex flex-col items-center last:mb-10">
-      {data?.recommend.length == 0 && <EmptyFeed />}
+      {(data?.recommend.length == 0 || data?.recommend.length == undefined) && <EmptyFeed />}
       {loading && <Loading />}
       <Bio
         profile={profile}
