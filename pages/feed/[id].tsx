@@ -17,7 +17,7 @@ import { useEffect, useState } from "react";
 export default function Feed() {
   const router = useRouter();
   const { id } = router.query;
-  
+
   function showNextUser() {
     if (data.recommend.length > userNumber + 1) {
       setUserNumber(userNumber + 1);
@@ -80,18 +80,20 @@ export default function Feed() {
       />
       {textAnswers?.map((textAnswer) => (
         <TextQuestion
+          key={textAnswer.field.id}
           question={textAnswer.field.question}
           answer={textAnswer.value}
         />
       ))}
       {choiceAnswers?.map((choiceAnswer) => (
         <ChoiceQuestion
+          key={choiceAnswer.field.id}
           question={choiceAnswer.field.question}
           indeces={choiceAnswer.indices}
         />
       ))}
       <button className="fixed bottom-0" onClick={showNextUser}>
-        <SelectionButton userId={userId}/>
+        <SelectionButton userId={userId} />
       </button>
     </div>
   );

@@ -1,5 +1,4 @@
 import { gql } from "@apollo/client";
-import exp from "constants";
 
 export const FEED = gql(`
 query($distributionId: Int!) {

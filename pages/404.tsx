@@ -1,4 +1,5 @@
 import TelegramButton from "@/components/TelegramButton";
+import Image from "next/image";
 import Link from "next/link";
 
 export default function Error404() {
@@ -7,7 +8,7 @@ export default function Error404() {
       <div
         className={`flex flex-col items-center absolute inset-x-0 inset-y-1/3`}
       >
-        <img className="mb-7 w-5/12" src="../short-logo-t-b.png" />
+        <Image className="mb-7 w-5/12" src="../short-logo-t-b.png" alt="Logo" />
         <p className="mb-20 text-black text-opacity-90 text-base font-light">
           Find your best 404.
         </p>

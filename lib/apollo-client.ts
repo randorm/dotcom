@@ -61,7 +61,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 
 // Hook to create a new Apollo client
 export const useApolloClient = () => {
-  const [authToken] = useLocalStorage('token', undefined)
+  const [authToken, setAuthToken] = useLocalStorage('token', undefined)
   const client = new ApolloClient({
     link: from([addAuthLink(authToken), errorLink, retryLink, httpLink]),
     cache: new InMemoryCache(),
