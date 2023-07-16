@@ -92,6 +92,7 @@ export default function Feed() {
           indeces={choiceAnswer.indices}
         />
       ))}
+      <p>{profile.firstName}</p>
       <button className="fixed bottom-0" onClick={showNextUser}>
         <SelectionButton userId={userId} />
       </button>
