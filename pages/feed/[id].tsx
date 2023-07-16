@@ -77,7 +77,7 @@ export default function Feed() {
     if (me) {
       setId(me.me.id)
     }
-  }, [data, userNumber]);
+  }, [data, userNumber, me]);
 
   return (
     <div className="flex flex-col items-center last:mb-10">
@@ -100,7 +100,7 @@ export default function Feed() {
           indeces={choiceAnswer.indices}
         />
       ))}
-      <p>{JSON.stringify(me)}kjhlkjhljk</p>
+      <p>{idd}kjhlkjhljk</p>
       <button className="fixed bottom-0" onClick={showNextUser}>
         <SelectionButton userId={userId} />
       </button>
