@@ -38,6 +38,8 @@ export default function Feed() {
   const [choiceAnswers, setChoiceAnswer] = useState<ChoiceAnswer[]>();
   const [userNumber, setUserNumber] = useState(0);
   const [userId, setUserId] = useState(0);
+  const [idd, setId] = useState("---");
+
   const textAnswersArray: TextAnswer[] = [];
   const choiceAnswersArray: ChoiceAnswer[] = [];
   const distributionQuestionsArray: number[] = [];
@@ -72,6 +74,9 @@ export default function Feed() {
       setChoiceAnswer(choiceAnswersArray);
       setUserId(data.recommend[userNumber].id);
     }
+    if (me) {
+      setId(me.id)
+    }
   }, [data, userNumber]);
 
   return (
@@ -95,7 +100,7 @@ export default function Feed() {
           indeces={choiceAnswer.indices}
         />
       ))}
-      <p>{me?.id}kjhlkjhljk</p>
+      <p>{idd}kjhlkjhljk</p>
       <button className="fixed bottom-0" onClick={showNextUser}>
         <SelectionButton userId={userId} />
       </button>
