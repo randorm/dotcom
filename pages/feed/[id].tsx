@@ -3,7 +3,7 @@ import EmptyFeed from "@/components/EmptyFeed";
 import Loading from "@/components/Loading";
 import { ChoiceQuestion, TextQuestion } from "@/components/Question";
 import SelectionButton from "@/components/SelectionButton";
-import { FEED } from "@/graphql/queries";
+import { FEED, ME } from "@/graphql/queries";
 import {
   ChoiceAnswer,
   Field,
@@ -30,6 +30,9 @@ export default function Feed() {
   const { data, error, loading, refetch } = useQuery(FEED, {
     variables: { distributionId: Number(id) },
   });
+
+  const { data: me } = useQuery(ME);
+
   const [profile, setProfile] = useState<Profile>({} as Profile);
   const [textAnswers, setTextAnswer] = useState<TextAnswer[]>();
   const [choiceAnswers, setChoiceAnswer] = useState<ChoiceAnswer[]>();
@@ -92,7 +95,7 @@ export default function Feed() {
           indeces={choiceAnswer.indices}
         />
       ))}
-      <p>{profile.firstName}kjhlkjhljk</p>
+      <p>{me?.id}kjhlkjhljk</p>
       <button className="fixed bottom-0" onClick={showNextUser}>
         <SelectionButton userId={userId} />
       </button>

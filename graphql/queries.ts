@@ -1,5 +1,14 @@
 import { gql } from "@apollo/client";
 
+export const ME = gql(`
+query Me {
+  me {
+    id
+    username
+  }
+}
+`);
+
 export const FEED = gql(`
 query($distributionId: Int!) {
   distribution(distributionId: $distributionId) {
@@ -44,4 +53,4 @@ query($distributionId: Int!) {
     }
   }
 }
-`)
+`);
