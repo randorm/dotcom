@@ -1,5 +1,6 @@
 import React from "react";
 import Image from 'next/image';
+import logo from "../public/short-logo-t-b.png"
 import TelegramLoginButton, { TelegramUser } from "@/components/TelegramButton";
 import { authUsingTelegram } from "@/lib/auth";
 import { useRouter } from "next/router";
@@ -29,7 +30,7 @@ export default function Login() {
     <div
       className={`flex flex-col items-center absolute inset-x-0 inset-y-1/3`}
     >
-      <Image className="mb-7 w-5/12" src="./short-logo-t-b.png" alt="Logo" />
+      <Image className="mb-7 w-5/12" src={logo} alt="Logo" />
       <p className="mb-20 text-black text-opacity-90 text-base font-light">
         Find your best roommates.
       </p>
