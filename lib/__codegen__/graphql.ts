@@ -14,19 +14,20 @@ export type Scalars = {
   Int: { input: number; output: number; }
   Float: { input: number; output: number; }
   Date: { input: any; output: any; }
+  DateTime: { input: any; output: any; }
 };
 
 export type Answer = {
-  createdAt: Scalars['Date']['output'];
+  createdAt: Scalars['DateTime']['output'];
   field: Field;
   respondent: User;
   type: FieldType;
-  updatedAt: Scalars['Date']['output'];
+  updatedAt: Scalars['DateTime']['output'];
 };
 
 export type AnsweringDistribution = Distribution & {
   __typename?: 'AnsweringDistribution';
-  createdAt: Scalars['Date']['output'];
+  createdAt: Scalars['DateTime']['output'];
   creator: User;
   fieldCount: Scalars['Int']['output'];
   fields: Array<Field>;
@@ -35,24 +36,24 @@ export type AnsweringDistribution = Distribution & {
   participantCount: Scalars['Int']['output'];
   participants: Array<User>;
   state: DistributionState;
-  updatedAt: Scalars['Date']['output'];
+  updatedAt: Scalars['DateTime']['output'];
 };
 
 export type ChoiceAnswer = Answer & {
   __typename?: 'ChoiceAnswer';
-  createdAt: Scalars['Date']['output'];
+  createdAt: Scalars['DateTime']['output'];
   field: ChoiceField;
   indices: Array<Scalars['Int']['output']>;
   respondent: User;
   type: FieldType;
-  updatedAt: Scalars['Date']['output'];
+  updatedAt: Scalars['DateTime']['output'];
 };
 
 export type ChoiceField = Field & {
   __typename?: 'ChoiceField';
   answerCount: Scalars['Int']['output'];
   answers: Array<ChoiceAnswer>;
-  createdAt: Scalars['Date']['output'];
+  createdAt: Scalars['DateTime']['output'];
   creator: User;
   id: Scalars['Int']['output'];
   multiple: Scalars['Boolean']['output'];
@@ -64,7 +65,7 @@ export type ChoiceField = Field & {
 
 export type ClosedDistribution = Distribution & {
   __typename?: 'ClosedDistribution';
-  createdAt: Scalars['Date']['output'];
+  createdAt: Scalars['DateTime']['output'];
   creator: User;
   fieldCount: Scalars['Int']['output'];
   fields: Array<Field>;
@@ -75,18 +76,18 @@ export type ClosedDistribution = Distribution & {
   participantCount: Scalars['Int']['output'];
   participants: Array<User>;
   state: DistributionState;
-  updatedAt: Scalars['Date']['output'];
+  updatedAt: Scalars['DateTime']['output'];
 };
 
 export type Distribution = {
-  createdAt: Scalars['Date']['output'];
+  createdAt: Scalars['DateTime']['output'];
   creator: User;
   fieldCount: Scalars['Int']['output'];
   fields: Array<Field>;
   id: Scalars['Int']['output'];
   name: Scalars['String']['output'];
   state: DistributionState;
-  updatedAt: Scalars['Date']['output'];
+  updatedAt: Scalars['DateTime']['output'];
 };
 
 export enum DistributionState {
@@ -99,7 +100,7 @@ export enum DistributionState {
 export type Field = {
   answerCount: Scalars['Int']['output'];
   answers: Array<Answer>;
-  createdAt: Scalars['Date']['output'];
+  createdAt: Scalars['DateTime']['output'];
   creator: User;
   id: Scalars['Int']['output'];
   question: Scalars['String']['output'];
@@ -114,7 +115,7 @@ export enum FieldType {
 
 export type GatheringDistribution = Distribution & {
   __typename?: 'GatheringDistribution';
-  createdAt: Scalars['Date']['output'];
+  createdAt: Scalars['DateTime']['output'];
   creator: User;
   fieldCount: Scalars['Int']['output'];
   fields: Array<Field>;
@@ -123,7 +124,7 @@ export type GatheringDistribution = Distribution & {
   participantCount: Scalars['Int']['output'];
   participants: Array<User>;
   state: DistributionState;
-  updatedAt: Scalars['Date']['output'];
+  updatedAt: Scalars['DateTime']['output'];
 };
 
 export enum Gender {
@@ -133,7 +134,7 @@ export enum Gender {
 
 export type Group = {
   __typename?: 'Group';
-  createdAt: Scalars['Date']['output'];
+  createdAt: Scalars['DateTime']['output'];
   distribution: ClosedDistribution;
   id: Scalars['Int']['output'];
   memberCount: Scalars['Int']['output'];
@@ -273,14 +274,14 @@ export type MutationUpdateUserProfileArgs = {
 
 export type PreparingDistribution = Distribution & {
   __typename?: 'PreparingDistribution';
-  createdAt: Scalars['Date']['output'];
+  createdAt: Scalars['DateTime']['output'];
   creator: User;
   fieldCount: Scalars['Int']['output'];
   fields: Array<Field>;
   id: Scalars['Int']['output'];
   name: Scalars['String']['output'];
   state: DistributionState;
-  updatedAt: Scalars['Date']['output'];
+  updatedAt: Scalars['DateTime']['output'];
 };
 
 export type Profile = {
@@ -382,11 +383,11 @@ export type SubscribeUpdate = {
 
 export type TextAnswer = Answer & {
   __typename?: 'TextAnswer';
-  createdAt: Scalars['Date']['output'];
+  createdAt: Scalars['DateTime']['output'];
   field: TextField;
   respondent: User;
   type: FieldType;
-  updatedAt: Scalars['Date']['output'];
+  updatedAt: Scalars['DateTime']['output'];
   value: Scalars['String']['output'];
 };
 
@@ -394,7 +395,7 @@ export type TextField = Field & {
   __typename?: 'TextField';
   answerCount: Scalars['Int']['output'];
   answers: Array<TextAnswer>;
-  createdAt: Scalars['Date']['output'];
+  createdAt: Scalars['DateTime']['output'];
   creator: User;
   format?: Maybe<Scalars['String']['output']>;
   id: Scalars['Int']['output'];
@@ -413,7 +414,7 @@ export type UnsubscribeUpdate = {
 export type User = {
   __typename?: 'User';
   answers: Array<Answer>;
-  createdAt: Scalars['Date']['output'];
+  createdAt: Scalars['DateTime']['output'];
   distributionCount: Scalars['Int']['output'];
   distributions: Array<Distribution>;
   fieldCount: Scalars['Int']['output'];
@@ -427,7 +428,7 @@ export type User = {
   subscribers: Array<User>;
   subscriptionCount: Scalars['Int']['output'];
   subscriptions: Array<User>;
-  updatedAt: Scalars['Date']['output'];
+  updatedAt: Scalars['DateTime']['output'];
   username: Scalars['String']['output'];
   viewed: Array<User>;
   viewedCount: Scalars['Int']['output'];
