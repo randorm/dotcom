@@ -100,7 +100,7 @@ export default function Feed() {
           indeces={choiceAnswer.indices}
         />
       ))}
-      <p>{idd}kjhlkjhljk</p>
+      <p>{JSON.stringify(me)}kjhlkjhljk</p>
       <button className="fixed bottom-0" onClick={showNextUser}>
         <SelectionButton userId={userId} />
       </button>
