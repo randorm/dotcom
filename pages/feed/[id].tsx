@@ -75,7 +75,7 @@ export default function Feed() {
       setUserId(data.recommend[userNumber].id);
     }
     if (me) {
-      setId(me.id)
+      setId(me.me.id)
     }
   }, [data, userNumber]);
 
