@@ -35,7 +35,7 @@ const addAuthLink = (token?: string) =>
       return {
         headers: {
           ...headers,
-          //authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
       };
     } else {
