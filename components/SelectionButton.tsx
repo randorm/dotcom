@@ -1,4 +1,4 @@
-import { MARK_VIEWED, SUBSCRIBE, UNSUBSCRIBE } from "@/graphql/mutations";
+import { MARK_VIEWED, SUBSCRIBE } from "@/graphql/mutations";
 import { useMutation } from "@apollo/client";
 
 interface ISelectionButton {
@@ -11,11 +11,7 @@ export default function SelectionButton({userId}: ISelectionButton) {
   );
 
   const [subscribe, { data: subscribed }] = useMutation(
-    MARK_VIEWED,
-  );
-
-  const [unsubscribe, { data: unsubscribed }] = useMutation(
-    MARK_VIEWED,
+    SUBSCRIBE,
   );
 
   const addSubscription = () => {
