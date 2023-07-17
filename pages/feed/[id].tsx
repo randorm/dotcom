@@ -3,7 +3,7 @@ import EmptyFeed from "@/components/EmptyFeed";
 import Loading from "@/components/Loading";
 import { ChoiceQuestion, TextQuestion } from "@/components/Question";
 import SelectionButton from "@/components/SelectionButton";
-import { FEED, ME } from "@/graphql/queries";
+import { FEED } from "@/graphql/queries";
 import {
   ChoiceAnswer,
   Field,
@@ -31,20 +31,18 @@ export default function Feed() {
     variables: { distributionId: Number(id) },
   });
 
-  const { data: me } = useQuery(ME);
-
   const [profile, setProfile] = useState<Profile>({} as Profile);
   const [textAnswers, setTextAnswer] = useState<TextAnswer[]>();
   const [choiceAnswers, setChoiceAnswer] = useState<ChoiceAnswer[]>();
   const [userNumber, setUserNumber] = useState(0);
   const [userId, setUserId] = useState(0);
-  const [idd, setId] = useState("---");
 
   const textAnswersArray: TextAnswer[] = [];
   const choiceAnswersArray: ChoiceAnswer[] = [];
   const distributionQuestionsArray: number[] = [];
   useEffect(() => {
     if (data) {
+      console.log(data)
       data.distribution.fields?.map((field: Field) => (
         distributionQuestionsArray.push(field.id)
       ));
@@ -74,10 +72,7 @@ export default function Feed() {
       setChoiceAnswer(choiceAnswersArray);
       setUserId(data.recommend[userNumber].id);
     }
-    if (me) {
-      setId(me.me.id);
-    }
-  }, [data, userNumber, me]);
+  }, [data, userNumber]);
 
   const bottomRef = useRef<HTMLDivElement>(null);
   useEffect(
