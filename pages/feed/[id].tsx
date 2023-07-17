@@ -12,7 +12,7 @@ import {
 } from "@/lib/__codegen__/graphql";
 import { useQuery } from "@apollo/client";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function Feed() {
   const router = useRouter();
@@ -79,8 +79,14 @@ export default function Feed() {
     }
   }, [data, userNumber, me]);
 
+  const bottomRef = useRef<HTMLDivElement>(null);
+  useEffect(
+    () => bottomRef.current?.scrollIntoView({ behavior: "smooth" }),
+    [showNextUser],
+  );
+
   return (
-    <div className="flex flex-col items-center last:mb-10">
+    <div className="flex flex-col items-center last:mb-10 dark:text-white">
       {loading && <Loading />}
       {(data?.recommend.length == 0 || data?.recommend.length == undefined)
         ? <EmptyFeed />
@@ -109,6 +115,7 @@ export default function Feed() {
             </button>
           </>
         )}
+      <div ref={bottomRef} />
     </div>
   );
 }
