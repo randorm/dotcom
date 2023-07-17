@@ -19,6 +19,7 @@ export default function Feed() {
   const { id } = router.query;
 
   function showNextUser() {
+    window.scrollTo(0, 0)
     if (data.recommend.length > userNumber + 1) {
       setUserNumber(userNumber + 1);
     } else {
@@ -76,12 +77,6 @@ export default function Feed() {
     }
   }, [data, userNumber]);
 
-  const bottomRef = useRef<HTMLDivElement>(null);
-  useEffect(
-    () => bottomRef.current?.scrollIntoView({ behavior: "smooth" }),
-    [showNextUser],
-  );
-
   return (
     <div className="flex flex-col items-center last:mb-10 dark:text-white">
       {loading && <Loading />}
@@ -112,7 +107,6 @@ export default function Feed() {
             </button>
           </>
         )}
-      <div ref={bottomRef} />
     </div>
   );
 }
