@@ -78,7 +78,7 @@ export default function Feed() {
   }, [data, userNumber]);
 
   return (
-    <div className="flex flex-col items-center last:mb-10 dark:text-white">
+    <div className="flex flex-col items-center last:mb-10 dark:bg-white">
       {loading && <Loading />}
       {(data?.recommend.length == 0 || data?.recommend.length == undefined)
         ? <EmptyFeed />
