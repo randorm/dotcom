@@ -14,7 +14,7 @@ import {
 } from "@/lib/__codegen__/graphql";
 import { useQuery } from "@apollo/client";
 import { useRouter } from "next/router";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Feed() {
   const router = useRouter();

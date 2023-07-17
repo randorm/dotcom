@@ -35,6 +35,7 @@ query($distributionId: Int!) {
       bio
     }
     answers {
+      type
       ...on ChoiceAnswer {
         field {
           id
