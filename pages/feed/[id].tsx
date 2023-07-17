@@ -99,6 +99,7 @@ export default function Feed() {
             {choiceAnswers?.map((choiceAnswer) => (
               <ChoiceQuestion
                 key={choiceAnswer.field.id}
+                options={choiceAnswer.field.options}
                 question={choiceAnswer.field.question}
                 indeces={choiceAnswer.indices}
               />

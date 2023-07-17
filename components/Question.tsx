@@ -5,6 +5,7 @@ export interface ITextQuestion {
 
 export interface IChoiceQuestion {
   readonly question: string;
+  readonly options: readonly string[];
   readonly indeces: number[];
 }
 
@@ -17,11 +18,11 @@ export function TextQuestion({ question, answer }: ITextQuestion) {
   );
 }
 
-export function ChoiceQuestion({ question, indeces }: IChoiceQuestion) {
+export function ChoiceQuestion({ question, options, indeces }: IChoiceQuestion) {
   return (
     <div className="py-2 w-9/12">
       <p className="text-sm font-light">{question}</p>
-      <p className="text-xs font-extralight opacity-80">{indeces}</p>
+      <p className="text-xs font-extralight opacity-80">{indeces.map((i) => options[i])}</p>
     </div>
   );
 }
