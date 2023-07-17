@@ -42,35 +42,37 @@ export default function Feed() {
   const distributionQuestionsArray: number[] = [];
   useEffect(() => {
     if (data) {
-      console.log(data)
-      data.distribution.fields?.map((field: Field) => (
-        distributionQuestionsArray.push(field.id)
-      ));
+      console.log(data);
+      if (data.recommend.length != 0) {
+        data.distribution.fields?.map((field: Field) => (
+          distributionQuestionsArray.push(field.id)
+        ));
 
-      for (var i = 0; i < data.recommend[userNumber].answers.length; i++) {
-        if (
-          data.recommend[userNumber].answers[i].value &&
-          distributionQuestionsArray.includes(
-            data.recommend[userNumber].answers[i].field.id,
-          )
-        ) {
-          textAnswersArray.push(data.recommend[userNumber].answers[i]);
-        } else if (
-          data.recommend[userNumber].answers[i].indices &&
-          distributionQuestionsArray.includes(
-            data.recommend[userNumber].answers[i].field.id,
-          )
-        ) {
-          choiceAnswersArray.push(data.recommend[userNumber].answers[i]);
-        } else {
-          continue;
+        for (var i = 0; i < data.recommend[userNumber].answers.length; i++) {
+          if (
+            data.recommend[userNumber].answers[i].value &&
+            distributionQuestionsArray.includes(
+              data.recommend[userNumber].answers[i].field.id,
+            )
+          ) {
+            textAnswersArray.push(data.recommend[userNumber].answers[i]);
+          } else if (
+            data.recommend[userNumber].answers[i].indices &&
+            distributionQuestionsArray.includes(
+              data.recommend[userNumber].answers[i].field.id,
+            )
+          ) {
+            choiceAnswersArray.push(data.recommend[userNumber].answers[i]);
+          } else {
+            continue;
+          }
         }
-      }
 
-      setProfile(data.recommend[userNumber].profile);
-      setTextAnswer(textAnswersArray);
-      setChoiceAnswer(choiceAnswersArray);
-      setUserId(data.recommend[userNumber].id);
+        setProfile(data.recommend[userNumber].profile);
+        setTextAnswer(textAnswersArray);
+        setChoiceAnswer(choiceAnswersArray);
+        setUserId(data.recommend[userNumber].id);
+      }
     }
   }, [data, userNumber]);
 
