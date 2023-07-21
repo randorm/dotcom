@@ -6,10 +6,10 @@ import leftArrow from "../public/left-arrow.svg";
 import righrArrow from "../public/right-arrow.svg";
 
 interface ISelectionButton {
-  readonly userId: number
+  readonly userId: number;
 }
 
-export default function SelectionButton({userId}: ISelectionButton) {
+export default function SelectionButton({ userId }: ISelectionButton) {
   const [markViewed, { data: viewed, error }] = useMutation(
     MARK_VIEWED,
   );
@@ -27,15 +27,15 @@ export default function SelectionButton({userId}: ISelectionButton) {
     subscribe({
       variables: {
         userId: userId,
-      }
-    })
-  }; 
+      },
+    });
+  };
 
   const nextUser = () => {
     if (error) return `Submission error! ${error.message}`;
-    console.log("Next, user with id: " + userId)
-    console.log(viewed)
-    console.log("Viewed, user with id: " + viewed.user.id)
+    console.log("Next, user with id: " + userId);
+    console.log(viewed);
+    console.log("Viewed, user with id: " + viewed.user.id);
     markViewed({
       variables: {
         userId: userId,
@@ -45,10 +45,21 @@ export default function SelectionButton({userId}: ISelectionButton) {
 
   return (
     <div className="flex w-screen justify-center">
-      <button onClick={nextUser} className="bg-black w-3/6 flex justify-center">
+      <button
+        onClick={() =>
+          markViewed({
+            variables: {
+              userId: userId,
+            },
+          })}
+        className="bg-black w-3/6 flex justify-center"
+      >
         <Image src={leftArrow} alt="Dislike the person" />
       </button>
-      <button onClick={addSubscription} className="bg-green-600 w-3/6 flex justify-center">
+      <button
+        onClick={addSubscription}
+        className="bg-green-600 w-3/6 flex justify-center"
+      >
         <Image src={righrArrow} alt="Like the person" />
       </button>
     </div>
