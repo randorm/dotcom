@@ -21,10 +21,13 @@ export default function Feed() {
   const { id } = router.query;
 
   function showNextUser() {
+    console.log(userId)
     window.scrollTo(0, 0);
     if ((data.recommend.length == userNumber + 1) && (data.recommend.length > 1)) {
       setUserNumber(userNumber + 1);
+      console.log("showing next user")
     } else {
+      console.log("refetching")
       setUserNumber(0);
       refetch({ distributionId: Number(id) });
     }
