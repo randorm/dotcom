@@ -21,8 +21,8 @@ export default function Feed() {
   const { id } = router.query;
 
   function showNextUser() {
-    console.log(userId)
-    console.log(data.recommend.length == userNumber + 1)
+    console.log("Current userId: "+userId)
+    console.log(data.recommend.length != userNumber + 1)
     console.log(data.recommend.length > 1)
     window.scrollTo(0, 0);
     if ((data.recommend.length != userNumber + 1) && (data.recommend.length > 1)) {
@@ -32,6 +32,7 @@ export default function Feed() {
       console.log("refetching")
       setUserNumber(0);
       refetch({ distributionId: Number(id) });
+      window.location.reload();
     }
   }
 
