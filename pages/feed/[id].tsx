@@ -23,7 +23,7 @@ export default function Feed() {
   function showNextUser() {
     window.scrollTo(0, 0);
     console.log(data.recommend.length + "   " + (userNumber + 1))
-    if ((data.recommend.length > userNumber) && (data.recommend.length > 1)) { 
+    if ((data.recommend.length > userNumber+1) && (data.recommend.length > 1)) { 
       setUserNumber(userNumber + 1);
       console.log("next")
     } else {
