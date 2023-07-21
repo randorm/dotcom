@@ -10,7 +10,7 @@ interface ISelectionButton {
 }
 
 export default function SelectionButton({userId}: ISelectionButton) {
-  const [markViewed, { data: viewed }] = useMutation(
+  const [markViewed, { data }] = useMutation(
     MARK_VIEWED,
   );
 
@@ -29,12 +29,12 @@ export default function SelectionButton({userId}: ISelectionButton) {
         userId: userId,
       }
     })
-  };
+  }; 
 
   const nextUser = () => {
     console.log("Next, user with id: " + userId)
-    console.log(viewed)
-    console.log("Viewed, user with id: " + viewed.user.id)
+    console.log(data)
+    console.log("Viewed, user with id: " + data.user.id)
     markViewed({
       variables: {
         userId: userId,
@@ -47,7 +47,7 @@ export default function SelectionButton({userId}: ISelectionButton) {
       <button onClick={nextUser} className="bg-black w-3/6 flex justify-center">
         <Image src={leftArrow} alt="Dislike the person" />
       </button>
-      <button onClick={addSubscription} className="bg-green-500 w-3/6 flex justify-center">
+      <button onClick={addSubscription} className="bg-green-400 w-3/6 flex justify-center">
         <Image src={righrArrow} alt="Like the person" />
       </button>
     </div>
