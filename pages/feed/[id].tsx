@@ -21,7 +21,7 @@ export default function Feed() {
   const { id } = router.query;
 
   function showNextUser() {
-    console.log("Current userId: "+userId)
+    console.log("Current userId: "+ userId)
     console.log(data.recommend.length != userNumber + 1)
     console.log(data.recommend.length > 1)
     window.scrollTo(0, 0);
@@ -79,6 +79,7 @@ export default function Feed() {
         setProfile(data.recommend[userNumber].profile);
         setAnswers(answersArray);
         setUserId(data.recommend[userNumber].id);
+        console.log(userId)
       }
     }
   }, [data, userNumber]);
