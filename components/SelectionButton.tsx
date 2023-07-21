@@ -33,6 +33,7 @@ export default function SelectionButton({userId}: ISelectionButton) {
 
   const nextUser = () => {
     console.log("Next, user with id: " + userId)
+    console.log(viewed)
     console.log("Viewed, user with id: " + viewed.user.id)
     markViewed({
       variables: {
