@@ -22,17 +22,17 @@ export default function Feed() {
 
   function showNextUser() {
     console.log("Current userId: "+ userId)
-    console.log(data.recommend.length != userNumber + 1)
-    console.log(data.recommend.length > 1)
+
     window.scrollTo(0, 0);
     if ((data.recommend.length != userNumber + 1) && (data.recommend.length > 1)) {
       setUserNumber(userNumber + 1);
-      console.log("showing next user")
     } else {
-      console.log("refetching")
       setUserNumber(0);
       refetch({ distributionId: Number(id) });
-      window.location.reload();
+
+      if (data.recommend.length == 0) {
+        window.location.reload();
+      }
     }
   }
 
@@ -79,7 +79,6 @@ export default function Feed() {
         setProfile(data.recommend[userNumber].profile);
         setAnswers(answersArray);
         setUserId(data.recommend[userNumber].id);
-        console.log(userId)
       }
     }
   }, [data, userNumber]);

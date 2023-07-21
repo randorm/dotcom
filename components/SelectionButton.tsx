@@ -19,7 +19,6 @@ export default function SelectionButton({userId}: ISelectionButton) {
   );
 
   const addSubscription = () => {
-    console.log("Subscribed")
     markViewed({
       variables: {
         userId: userId,
@@ -34,6 +33,7 @@ export default function SelectionButton({userId}: ISelectionButton) {
 
   const nextUser = () => {
     console.log("Next, user with id: " + userId)
+    console.log("Viewed, user with id: " + viewed.user.id)
     markViewed({
       variables: {
         userId: userId,
@@ -41,15 +41,6 @@ export default function SelectionButton({userId}: ISelectionButton) {
     });
   };
 
-  useEffect(() => {
-    if (viewed) {
-      console.log("Just viewed user with id: " + userId)
-    }
-
-    if (subscribed) {
-      console.log("Just subsribed user with id: " + userId)
-    }
-  }, [viewed, subscribed])
   return (
     <div className="flex w-screen justify-center">
       <button onClick={nextUser} className="bg-black w-3/6 flex justify-center">
