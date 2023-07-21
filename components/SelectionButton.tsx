@@ -52,10 +52,10 @@ export default function SelectionButton({userId}: ISelectionButton) {
   }, [viewed, subscribed])
   return (
     <div className="flex w-screen justify-center">
-      <button onClick={nextUser} className="bg-black bg-opacity-90 w-3/6 flex justify-center">
+      <button onClick={nextUser} className="bg-black w-3/6 flex justify-center">
         <Image src={leftArrow} alt="Dislike the person" />
       </button>
-      <button onClick={addSubscription} className="bg-green-600 bg-opacity-90 w-3/6 flex justify-center">
+      <button onClick={addSubscription} className="bg-green-500 w-3/6 flex justify-center">
         <Image src={righrArrow} alt="Like the person" />
       </button>
     </div>
