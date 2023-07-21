@@ -1,6 +1,7 @@
 import { MARK_VIEWED, SUBSCRIBE } from "@/graphql/mutations";
 import { useMutation } from "@apollo/client";
 import Image from "next/image";
+import { useEffect } from "react";
 import leftArrow from "../public/left-arrow.svg";
 import righrArrow from "../public/right-arrow.svg";
 
@@ -18,6 +19,7 @@ export default function SelectionButton({userId}: ISelectionButton) {
   );
 
   const addSubscription = () => {
+    console.log("Subscribed")
     markViewed({
       variables: {
         userId: userId,
@@ -31,6 +33,7 @@ export default function SelectionButton({userId}: ISelectionButton) {
   };
 
   const nextUser = () => {
+    console.log("Next user")
     markViewed({
       variables: {
         userId: userId,
@@ -38,6 +41,15 @@ export default function SelectionButton({userId}: ISelectionButton) {
     });
   };
 
+  useEffect(() => {
+    if (viewed) {
+      console.log("Just viewed " + viewed)
+    }
+
+    if (subscribed) {
+      console.log("Just subsribed " + subscribed)
+    }
+  }, [viewed, subscribed])
   return (
     <div className="flex w-screen justify-center">
       <button onClick={nextUser} className="bg-black bg-opacity-90 w-3/6 flex justify-center">
