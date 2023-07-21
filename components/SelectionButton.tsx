@@ -43,11 +43,11 @@ export default function SelectionButton({userId}: ISelectionButton) {
 
   useEffect(() => {
     if (viewed) {
-      console.log("Just viewed " + viewed.id)
+      console.log("Just viewed " + userId)
     }
 
     if (subscribed) {
-      console.log("Just subsribed " + subscribed.id)
+      console.log("Just subsribed " + userId)
     }
   }, [viewed, subscribed])
   return (
