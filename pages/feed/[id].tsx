@@ -43,6 +43,46 @@ export default function Feed() {
   const [answers, setAnswers] = useState<(TextAnswer | ChoiceAnswer)[]>();
   const [userNumber, setUserNumber] = useState(0);
   const [userId, setUserId] = useState(0);
+  const [fl, setFl] = useState(true);
+
+  useEffect(() => {
+    const answersArray: (TextAnswer | ChoiceAnswer)[] = [];
+    const distributionQuestionsArray: number[] = [];
+
+    if (data && fl) {
+      console.log(data);
+      if (data.recommend.length != 0) {
+        data.distribution.fields?.map((field: Field) => (
+          distributionQuestionsArray.push(field.id)
+        ));
+
+        for (var i = 0; i < data.recommend[userNumber].answers.length; i++) {
+          if (
+            data.recommend[userNumber].answers[i].value &&
+            distributionQuestionsArray.includes(
+              data.recommend[userNumber].answers[i].field.id,
+            )
+          ) {
+            answersArray.push(data.recommend[userNumber].answers[i]);
+          } else if (
+            data.recommend[userNumber].answers[i].indices &&
+            distributionQuestionsArray.includes(
+              data.recommend[userNumber].answers[i].field.id,
+            )
+          ) {
+            answersArray.push(data.recommend[userNumber].answers[i]);
+          } else {
+            continue;
+          }
+        }
+
+        setProfile(data.recommend[userNumber].profile);
+        setAnswers(answersArray);
+        setUserId(data.recommend[userNumber].id);
+        setFl(false);
+      }
+    }
+  }, [data])
 
   useUpdateEffect(() => {
     console.log("update")
@@ -81,7 +121,7 @@ export default function Feed() {
         setUserId(data.recommend[userNumber].id);
       }
     }
-  }, [data]);
+  }, [userNumber]);
 
   return (
     <div className="flex flex-col items-center last:mb-10 dark:bg-white">
