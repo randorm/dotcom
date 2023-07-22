@@ -28,7 +28,7 @@ export default function Feed() {
       console.log(userNumber)
       refetch({ distributionId: Number(id) });
       console.log(userNumber)
-      setUserNumber(0);
+      setUserNumber((userNumber) => userNumber = 0);
       console.log(userNumber)
       console.log("------------")
 
