@@ -11,7 +11,6 @@ import {
   FieldType,
   Profile,
   TextAnswer,
-  User,
 } from "@/lib/__codegen__/graphql";
 import { useQuery } from "@apollo/client";
 import { useRouter } from "next/router";
@@ -21,32 +20,31 @@ import { useUpdateEffect } from "usehooks-ts";
 export default function Feed() {
   const router = useRouter();
   const { id } = router.query;
-  const { data, error, loading, refetch } = useQuery(FEED, {
-    variables: { distributionId: Number(id) },
-  });
-
-  const [profile, setProfile] = useState<Profile>({} as Profile);
-  const [answers, setAnswers] = useState<(TextAnswer | ChoiceAnswer)[]>();
-  const [userCurrentNumber, setUserCurrentNumber] = useState(0);
-  const [userId, setUserId] = useState(0);
-  const [recommendedUsers, setRecommendedUsers] = useState<User[]>();
-
 
   function showNextUser() {
     window.scrollTo(0, 0);
-    if ((data.recommend.length > userCurrentNumber + 1) && (data.recommend.length > 1)) { 
-      setUserCurrentNumber(userCurrentNumber + 1);
+    if ((data.recommend.length > userNumber + 1) && (data.recommend.length > 1)) { 
+      setUserNumber(userNumber + 1);
     } else {
       refetch({ distributionId: Number(id) });
-      setUserCurrentNumber(0);
+      setUserNumber(0);
 
       if (data.recommend.length == 0) {
         window.location.reload();
       }
     }
   }
-  useEffect(() => {
-    refetch({ distributionId: Number(id) });
+
+  const { data, error, loading, refetch } = useQuery(FEED, {
+    variables: { distributionId: Number(id) },
+  });
+
+  const [profile, setProfile] = useState<Profile>({} as Profile);
+  const [answers, setAnswers] = useState<(TextAnswer | ChoiceAnswer)[]>();
+  const [userNumber, setUserNumber] = useState(0);
+  const [userId, setUserId] = useState(0);
+
+  useUpdateEffect(() => {
     const answersArray: (TextAnswer | ChoiceAnswer)[] = [];
     const distributionQuestionsArray: number[] = [];
 
@@ -57,40 +55,32 @@ export default function Feed() {
           distributionQuestionsArray.push(field.id)
         ));
 
-        for (var i = 0; i < data.recommend[userCurrentNumber].answers.length; i++) {
+        for (var i = 0; i < data.recommend[userNumber].answers.length; i++) {
           if (
-            data.recommend[userCurrentNumber].answers[i].value &&
+            data.recommend[userNumber].answers[i].value &&
             distributionQuestionsArray.includes(
-              data.recommend[userCurrentNumber].answers[i].field.id,
+              data.recommend[userNumber].answers[i].field.id,
             )
           ) {
-            answersArray.push(data.recommend[userCurrentNumber].answers[i]);
+            answersArray.push(data.recommend[userNumber].answers[i]);
           } else if (
-            data.recommend[userCurrentNumber].answers[i].indices &&
+            data.recommend[userNumber].answers[i].indices &&
             distributionQuestionsArray.includes(
-              data.recommend[userCurrentNumber].answers[i].field.id,
+              data.recommend[userNumber].answers[i].field.id,
             )
           ) {
-            answersArray.push(data.recommend[userCurrentNumber].answers[i]);
+            answersArray.push(data.recommend[userNumber].answers[i]);
           } else {
             continue;
           }
         }
 
-        //setProfile(data.recommend[userCurrentNumber].profile);
+        setProfile(data.recommend[userNumber].profile);
         setAnswers(answersArray);
-        setRecommendedUsers(data.recommend)
-        console.log(recommendedUsers)
-        //setUserId(data.recommend[userCurrentNumber].id);
+        setUserId(data.recommend[userNumber].id);
       }
     }
-  },[])
-
-  useUpdateEffect(() => {
-    
-
-    
-  }, [userCurrentNumber]);
+  }, [data, userNumber]);
 
   return (
     <div className="flex flex-col items-center last:mb-10 dark:bg-white">
