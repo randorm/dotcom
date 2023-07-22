@@ -4,16 +4,10 @@ import Loading from "@/components/Loading";
 import { ChoiceQuestion, TextQuestion } from "@/components/Question";
 import SelectionButton from "@/components/SelectionButton";
 import { FEED } from "@/graphql/queries";
-import { MARK_VIEWED, SUBSCRIBE } from "@/graphql/mutations";
-import { useMutation } from "@apollo/client";
-import Image from "next/image";
-import leftArrow from "../../public/left-arrow.svg";
-import righrArrow from "../../public/right-arrow.svg";
-
 import {
   ChoiceAnswer,
-  ChoiceField,
   Field,
+  ChoiceField,
   FieldType,
   Profile,
   TextAnswer,
@@ -29,15 +23,7 @@ export default function Feed() {
 
   function showNextUser() {
     window.scrollTo(0, 0);
-    markViewed({
-      variables: {
-        userId: userId,
-      },
-    });
-
-    if (
-      (data.recommend.length > userNumber + 1) && (data.recommend.length > 1)
-    ) {
+    if ((data.recommend.length > userNumber + 1) && (data.recommend.length > 1)) { 
       setUserNumber(userNumber + 1);
     } else {
       refetch({ distributionId: Number(id) });
@@ -49,16 +35,14 @@ export default function Feed() {
     }
   }
 
+  function updateAfterSubsciption() {
+    refetch({ distributionId: Number(id) });
+      setUserNumber(0);
+  }
+
   const { data, error, loading, refetch } = useQuery(FEED, {
     variables: { distributionId: Number(id) },
   });
-  const [markViewed, { data: viewed }] = useMutation(
-    MARK_VIEWED,
-  );
-
-  const [subscribe, { data: subscribed }] = useMutation(
-    SUBSCRIBE,
-  );
 
   const [profile, setProfile] = useState<Profile>({} as Profile);
   const [answers, setAnswers] = useState<(TextAnswer | ChoiceAnswer)[]>();
@@ -103,10 +87,10 @@ export default function Feed() {
         setFl(false);
       }
     }
-  }, [data]);
+  }, [data])
 
   useUpdateEffect(() => {
-    console.log("update");
+    console.log("update")
     const answersArray: (TextAnswer | ChoiceAnswer)[] = [];
     const distributionQuestionsArray: number[] = [];
 
@@ -172,40 +156,13 @@ export default function Feed() {
                   />
                 )
             )}
-            {
-              /* <button
+            <button
               disabled={loading}
               className="fixed bottom-0"
               onClick={showNextUser}
             >
-              <SelectionButton userId={userId} />
-            </button> */
-            }
-            <div className="flex w-screen justify-center">
-              <button
-                //disabled={loading}
-                onClick={() => showNextUser}
-                className="bg-black w-3/6 flex justify-center"
-              >
-                <Image src={leftArrow} alt="Dislike the person" />
-              </button>
-              <button
-                //disabled={loading}
-                onClick={() => {
-                  subscribe({
-                    variables: {
-                      userId: userId,
-                    },
-                  });
-                  showNextUser;
-                  refetch({ distributionId: Number(id) });
-                  setUserNumber(0);
-                }}
-                className="bg-green-600 w-3/6 flex justify-center"
-              >
-                <Image src={righrArrow} alt="Like the person" />
-              </button>
-            </div>
+              <SelectionButton callback={updateAfterSubsciption} userId={userId} />
+            </button>
           </>
         )}
     </div>
