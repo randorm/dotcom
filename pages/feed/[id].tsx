@@ -25,8 +25,12 @@ export default function Feed() {
     if ((data.recommend.length > userNumber + 1) && (data.recommend.length > 1)) { 
       setUserNumber(userNumber + 1);
     } else {
+      console.log(userNumber)
       refetch({ distributionId: Number(id) });
+      console.log(userNumber)
       setUserNumber(0);
+      console.log(userNumber)
+      console.log("------------")
 
       if (data.recommend.length == 0) {
         window.location.reload();
