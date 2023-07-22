@@ -15,6 +15,7 @@ import {
 import { useQuery } from "@apollo/client";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { useUpdateEffect } from "usehooks-ts";
 
 export default function Feed() {
   const router = useRouter();
@@ -81,7 +82,7 @@ export default function Feed() {
     }
   }, []);
 
-  useEffect(() => {
+  useUpdateEffect(() => {
     const answersArray: (TextAnswer | ChoiceAnswer)[] = [];
     const distributionQuestionsArray: number[] = [];
 
