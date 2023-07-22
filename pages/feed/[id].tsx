@@ -7,8 +7,8 @@ import { FEED } from "@/graphql/queries";
 import { MARK_VIEWED, SUBSCRIBE } from "@/graphql/mutations";
 import { useMutation } from "@apollo/client";
 import Image from "next/image";
-import leftArrow from "../public/left-arrow.svg";
-import righrArrow from "../public/right-arrow.svg";
+import leftArrow from "../../public/left-arrow.svg";
+import righrArrow from "../../public/right-arrow.svg";
 
 import {
   ChoiceAnswer,
