@@ -18,30 +18,6 @@ export default function SelectionButton({ userId }: ISelectionButton) {
     SUBSCRIBE,
   );
 
-  const addSubscription = () => {
-    markViewed({
-      variables: {
-        userId: userId,
-      },
-    });
-    subscribe({
-      variables: {
-        userId: userId,
-      },
-    });
-  };
-
-  const nextUser = () => {
-    console.log("Next, user with id: " + userId);
-    console.log(viewed);
-    console.log("Viewed, user with id: " + viewed.user.id);
-    markViewed({
-      variables: {
-        userId: userId,
-      },
-    });
-  };
-
   return (
     <div className="flex w-screen justify-center">
       <button
