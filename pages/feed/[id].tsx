@@ -45,8 +45,7 @@ export default function Feed() {
   const [userId, setUserId] = useState(0);
 
   useEffect(() => {
-    showNextUser()
-    console.log("aaa")
+    setUserNumber(userNumber + 1)
   }, []);
 
   useUpdateEffect(() => {
