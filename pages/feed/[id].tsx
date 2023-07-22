@@ -45,6 +45,7 @@ export default function Feed() {
   const [userId, setUserId] = useState(0);
 
   useUpdateEffect(() => {
+    console.log("update")
     const answersArray: (TextAnswer | ChoiceAnswer)[] = [];
     const distributionQuestionsArray: number[] = [];
 
