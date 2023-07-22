@@ -19,6 +19,35 @@ export default function SelectionButton({ userId }: ISelectionButton) {
   );
 
   return (
-    <></>
+    <div className="flex w-screen justify-center">
+      <button
+        onClick={() =>
+          markViewed({
+            variables: {
+              userId: userId,
+            },
+          })}
+        className="bg-black w-3/6 flex justify-center"
+      >
+        <Image src={leftArrow} alt="Dislike the person" />
+      </button>
+      <button
+        onClick={() => {
+          subscribe({
+            variables: {
+              userId: userId,
+            },
+          });
+          markViewed({
+            variables: {
+              userId: userId,
+            },
+          });
+        }}
+        className="bg-green-600 w-3/6 flex justify-center"
+      >
+        <Image src={righrArrow} alt="Like the person" />
+      </button>
+    </div>
   );
 }

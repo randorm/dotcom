@@ -183,14 +183,14 @@ export default function Feed() {
             }
             <div className="flex w-screen justify-center">
               <button
-                disabled={loading}
+                //disabled={loading}
                 onClick={() => showNextUser}
                 className="bg-black w-3/6 flex justify-center"
               >
                 <Image src={leftArrow} alt="Dislike the person" />
               </button>
               <button
-                disabled={loading}
+                //disabled={loading}
                 onClick={() => {
                   subscribe({
                     variables: {
