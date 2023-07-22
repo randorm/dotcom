@@ -21,12 +21,13 @@ export default function Feed() {
   const { id } = router.query;
 
   function showNextUser() {
-    refetch({ distributionId: Number(id) });
     window.scrollTo(0, 0);
     if ((data.recommend.length > userNumber + 1) && (data.recommend.length > 1)) { 
       setUserNumber(userNumber + 1);
     } else {
       setUserNumber(0);
+      refetch({ distributionId: Number(id) });
+
       if (data.recommend.length == 0) {
         window.location.reload();
       }
@@ -113,7 +114,7 @@ export default function Feed() {
               className="fixed bottom-0"
               onClick={showNextUser}
             >
-              <SelectionButton userId={userId} />
+              <SelectionButton callback={showNextUser} userId={userId} />
             </button>
           </>
         )}
