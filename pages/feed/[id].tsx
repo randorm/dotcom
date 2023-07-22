@@ -79,7 +79,7 @@ export default function Feed() {
         setUserId(data.recommend[userNumber].id);
       }
     }
-  }, [data, userNumber]);
+  }, [userNumber]);
 
   return (
     <div className="flex flex-col items-center last:mb-10 dark:bg-white">
