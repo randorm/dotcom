@@ -20,6 +20,15 @@ import { useUpdateEffect } from "usehooks-ts";
 export default function Feed() {
   const router = useRouter();
   const { id } = router.query;
+  const { data, error, loading, refetch } = useQuery(FEED, {
+    variables: { distributionId: Number(id) },
+  });
+
+  const [profile, setProfile] = useState<Profile>({} as Profile);
+  const [answers, setAnswers] = useState<(TextAnswer | ChoiceAnswer)[]>();
+  const [userNumber, setUserNumber] = useState(0);
+  const [userId, setUserId] = useState(0);
+
 
   function showNextUser() {
     window.scrollTo(0, 0);
@@ -34,19 +43,6 @@ export default function Feed() {
       }
     }
   }
-
-  const { data, error, loading, refetch } = useQuery(FEED, {
-    variables: { distributionId: Number(id) },
-  });
-
-  const [profile, setProfile] = useState<Profile>({} as Profile);
-  const [answers, setAnswers] = useState<(TextAnswer | ChoiceAnswer)[]>();
-  const [userNumber, setUserNumber] = useState(0);
-  const [userId, setUserId] = useState(0);
-
-  useEffect(() => {
-    setUserNumber(userNumber + 1)
-  }, []);
 
   useUpdateEffect(() => {
     const answersArray: (TextAnswer | ChoiceAnswer)[] = [];
@@ -119,7 +115,7 @@ export default function Feed() {
               className="fixed bottom-0"
               onClick={showNextUser}
             >
-              <SelectionButton callback={showNextUser} userId={userId} />
+              <SelectionButton userId={userId} />
             </button>
           </>
         )}

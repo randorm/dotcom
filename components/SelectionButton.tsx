@@ -7,10 +7,9 @@ import righrArrow from "../public/right-arrow.svg";
 
 interface ISelectionButton {
   readonly userId: number;
-  callback: () => void
 }
 
-export default function SelectionButton({ userId, callback }: ISelectionButton) {
+export default function SelectionButton({ userId }: ISelectionButton) {
   const [markViewed, { data: viewed }] = useMutation(
     MARK_VIEWED,
   );
@@ -44,7 +43,6 @@ export default function SelectionButton({ userId, callback }: ISelectionButton) 
               userId: userId,
             },
           });
-          callback
         }}
         className="bg-green-600 w-3/6 flex justify-center"
       >
