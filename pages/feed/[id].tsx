@@ -25,12 +25,8 @@ export default function Feed() {
     if ((data.recommend.length > userNumber + 1) && (data.recommend.length > 1)) { 
       setUserNumber(userNumber + 1);
     } else {
-      console.log(userNumber)
       refetch({ distributionId: Number(id) });
-      console.log(userNumber)
-      setUserNumber((userNumber) => userNumber = 0);
-      console.log(userNumber)
-      console.log("------------")
+      setUserNumber(0);
 
       if (data.recommend.length == 0) {
         window.location.reload();
@@ -83,7 +79,45 @@ export default function Feed() {
         setUserId(data.recommend[userNumber].id);
       }
     }
-  }, [data, userNumber]);
+  }, []);
+
+  useEffect(() => {
+    const answersArray: (TextAnswer | ChoiceAnswer)[] = [];
+    const distributionQuestionsArray: number[] = [];
+
+    if (data) {
+      console.log(data);
+      if (data.recommend.length != 0) {
+        data.distribution.fields?.map((field: Field) => (
+          distributionQuestionsArray.push(field.id)
+        ));
+
+        for (var i = 0; i < data.recommend[userNumber].answers.length; i++) {
+          if (
+            data.recommend[userNumber].answers[i].value &&
+            distributionQuestionsArray.includes(
+              data.recommend[userNumber].answers[i].field.id,
+            )
+          ) {
+            answersArray.push(data.recommend[userNumber].answers[i]);
+          } else if (
+            data.recommend[userNumber].answers[i].indices &&
+            distributionQuestionsArray.includes(
+              data.recommend[userNumber].answers[i].field.id,
+            )
+          ) {
+            answersArray.push(data.recommend[userNumber].answers[i]);
+          } else {
+            continue;
+          }
+        }
+
+        setProfile(data.recommend[userNumber].profile);
+        setAnswers(answersArray);
+        setUserId(data.recommend[userNumber].id);
+      }
+    }
+  }, [userNumber]);
 
   return (
     <div className="flex flex-col items-center last:mb-10 dark:bg-white">
