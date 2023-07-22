@@ -11,6 +11,7 @@ import {
   FieldType,
   Profile,
   TextAnswer,
+  User,
 } from "@/lib/__codegen__/graphql";
 import { useQuery } from "@apollo/client";
 import { useRouter } from "next/router";
@@ -26,25 +27,26 @@ export default function Feed() {
 
   const [profile, setProfile] = useState<Profile>({} as Profile);
   const [answers, setAnswers] = useState<(TextAnswer | ChoiceAnswer)[]>();
-  const [userNumber, setUserNumber] = useState(0);
+  const [userCurrentNumber, setUserCurrentNumber] = useState(0);
   const [userId, setUserId] = useState(0);
+  const [recommendedUsers, setRecommendedUsers] = useState<User[]>();
 
 
   function showNextUser() {
     window.scrollTo(0, 0);
-    if ((data.recommend.length > userNumber + 1) && (data.recommend.length > 1)) { 
-      setUserNumber(userNumber + 1);
+    if ((data.recommend.length > userCurrentNumber + 1) && (data.recommend.length > 1)) { 
+      setUserCurrentNumber(userCurrentNumber + 1);
     } else {
       refetch({ distributionId: Number(id) });
-      setUserNumber(0);
+      setUserCurrentNumber(0);
 
       if (data.recommend.length == 0) {
         window.location.reload();
       }
     }
   }
-
-  useUpdateEffect(() => {
+  useEffect(() => {
+    refetch({ distributionId: Number(id) });
     const answersArray: (TextAnswer | ChoiceAnswer)[] = [];
     const distributionQuestionsArray: number[] = [];
 
@@ -55,32 +57,40 @@ export default function Feed() {
           distributionQuestionsArray.push(field.id)
         ));
 
-        for (var i = 0; i < data.recommend[userNumber].answers.length; i++) {
+        for (var i = 0; i < data.recommend[userCurrentNumber].answers.length; i++) {
           if (
-            data.recommend[userNumber].answers[i].value &&
+            data.recommend[userCurrentNumber].answers[i].value &&
             distributionQuestionsArray.includes(
-              data.recommend[userNumber].answers[i].field.id,
+              data.recommend[userCurrentNumber].answers[i].field.id,
             )
           ) {
-            answersArray.push(data.recommend[userNumber].answers[i]);
+            answersArray.push(data.recommend[userCurrentNumber].answers[i]);
           } else if (
-            data.recommend[userNumber].answers[i].indices &&
+            data.recommend[userCurrentNumber].answers[i].indices &&
             distributionQuestionsArray.includes(
-              data.recommend[userNumber].answers[i].field.id,
+              data.recommend[userCurrentNumber].answers[i].field.id,
             )
           ) {
-            answersArray.push(data.recommend[userNumber].answers[i]);
+            answersArray.push(data.recommend[userCurrentNumber].answers[i]);
           } else {
             continue;
           }
         }
 
-        setProfile(data.recommend[userNumber].profile);
+        //setProfile(data.recommend[userCurrentNumber].profile);
         setAnswers(answersArray);
-        setUserId(data.recommend[userNumber].id);
+        setRecommendedUsers(data.recommend)
+        console.log(recommendedUsers)
+        //setUserId(data.recommend[userCurrentNumber].id);
       }
     }
-  }, [userNumber]);
+  },[])
+
+  useUpdateEffect(() => {
+    
+
+    
+  }, [userCurrentNumber]);
 
   return (
     <div className="flex flex-col items-center last:mb-10 dark:bg-white">
