@@ -32,14 +32,11 @@ export default function Feed() {
     { variables: { distributionId } },
   );
 
-  const [isFetching, setIsFetching] = useState(false);
-
   useEffect(
     () => {
       if (!data) return;
 
       if (cursor >= data.recommend.length) {
-        setIsFetching(true);
         refetch({ distributionId });
       }
 
@@ -47,13 +44,7 @@ export default function Feed() {
     },
     [cursor],
   );
-  useEffect(
-    () => {
-      setIsFetching(false);
-      setCursor(0);
-    },
-    [data],
-  );
+  useEffect(() => setCursor(0), [data]);
 
   const [isResolving, setIsResolving] = useState(false);
 
@@ -62,7 +53,7 @@ export default function Feed() {
 
   if (loading) return <Loading />;
 
-  // TODO: handle error
+  // TODO: handle these errors
   if (error) {
     return <h1>error: {error.message}</h1>;
   }
@@ -70,16 +61,12 @@ export default function Feed() {
     return <h1>no data</h1>;
   }
 
-  if (cursor >= data.recommend.length) {
-    return <h1>cursor out of bound {cursor} {data.recommend.toString()}</h1>;
-  }
-
   return (
     <div className="flex flex-col items-center last:mb-10 dark:bg-white">
-      {isFetching
-        ? <Loading />
-        : data.recommend.length === 0
+      {data.recommend.length === 0
         ? <EmptyFeed />
+        : cursor >= data.recommend.length
+        ? <Loading />
         : (
           <>
             <Bio profile={data.recommend[cursor].profile} />
