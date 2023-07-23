@@ -46,8 +46,6 @@ export default function Feed() {
   );
   useEffect(() => setCursor(0), [data]);
 
-  const [isResolving, setIsResolving] = useState(false);
-
   const [markViewed] = useMutation(MARK_VIEWED);
   const [subscribe] = useMutation(SUBSCRIBE);
 
@@ -96,38 +94,26 @@ export default function Feed() {
             <div className="flex w-screen justify-center">
               <button
                 className="bg-black w-3/6 flex justify-center"
-                onClick={async () => {
-                  setIsResolving(true);
-
-                  await markViewed({
+                onClick={() => {
+                  markViewed({
                     variables: { userId: data.recommend[cursor].id },
                   });
-
-                  setIsResolving(false);
                   setCursor(cursor + 1);
                 }}
-                disabled={isResolving}
               >
                 <LeftArrow />
               </button>
               <button
                 className="bg-green-600 w-3/6 flex justify-center"
                 onClick={async () => {
-                  setIsResolving(true);
-
-                  await Promise.all([
-                    markViewed({
-                      variables: { userId: data.recommend[cursor].id },
-                    }),
-                    subscribe({
-                      variables: { userId: data.recommend[cursor].id },
-                    }),
-                  ]);
-
-                  setIsResolving(false);
+                  markViewed({
+                    variables: { userId: data.recommend[cursor].id },
+                  });
+                  subscribe({
+                    variables: { userId: data.recommend[cursor].id },
+                  });
                   setCursor(cursor + 1);
                 }}
-                disabled={isResolving}
               >
                 <RightArrow />
               </button>
