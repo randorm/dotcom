@@ -37,7 +37,8 @@ export default function Feed() {
 
   function updateAfterSubsciption() {
     refetch({ distributionId: Number(id) });
-      setUserNumber(0);
+    window.location.reload();
+    setUserNumber(0);
   }
 
   const { data, error, loading, refetch } = useQuery(FEED, {
