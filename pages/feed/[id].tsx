@@ -17,6 +17,7 @@ import {
 import { useMutation, useQuery } from "@apollo/client";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import Error404 from "../404";
 
 export default function Feed() {
   const router = useRouter();
@@ -51,12 +52,11 @@ export default function Feed() {
 
   if (loading) return <Loading />;
 
-  // TODO: handle these errors
   if (error) {
-    return <h1>error: {error.message}</h1>;
+    return <Error404 />;
   }
   if (!data) {
-    return <h1>no data</h1>;
+    return <EmptyFeed />;
   }
 
   return (
