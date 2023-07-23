@@ -1,169 +1,138 @@
 import Bio from "@/components/Bio";
 import EmptyFeed from "@/components/EmptyFeed";
+import LeftArrow from "@/components/LeftArrow";
 import Loading from "@/components/Loading";
 import { ChoiceQuestion, TextQuestion } from "@/components/Question";
-import SelectionButton from "@/components/SelectionButton";
+import RightArrow from "@/components/RightArrow";
+import { MARK_VIEWED, SUBSCRIBE } from "@/graphql/mutations";
 import { FEED } from "@/graphql/queries";
 import {
   ChoiceAnswer,
-  Field,
   ChoiceField,
+  Distribution,
   FieldType,
-  Profile,
   TextAnswer,
+  User,
 } from "@/lib/__codegen__/graphql";
-import { useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { useUpdateEffect } from "usehooks-ts";
 
 export default function Feed() {
   const router = useRouter();
-  const { id } = router.query;
+  const distributionId = Number(router.query.id);
 
-  function showNextUser() {
-    window.scrollTo(0, 0);
-    if ((data.recommend.length > userNumber + 1) && (data.recommend.length > 1)) { 
-      setUserNumber(userNumber + 1);
-    } else {
-      refetch({ distributionId: Number(id) });
-      setUserNumber(0);
+  const { data, loading, error, refetch } = useQuery<{
+    distribution: Distribution;
+    recommend: readonly User[];
+  }>(
+    FEED,
+    { variables: { distributionId } },
+  );
 
-      if (data.recommend.length == 0) {
-        window.location.reload();
-      }
-    }
+  if (loading) return <Loading />;
+
+  // TODO: handle error
+  if (error) {
+    return <h1>error: {error.message}</h1>
+  }
+  if (!data) {
+    return <h1>no data</h1>
   }
 
-  function updateAfterSubsciption() {
-    refetch({ distributionId: Number(id) });
-    //window.location.reload();
-    setUserNumber(0);
-  }
+  const [cursor, setCursor] = useState(0);
 
-  const { data, error, loading, refetch } = useQuery(FEED, {
-    variables: { distributionId: Number(id) },
-  });
-
-  const [profile, setProfile] = useState<Profile>({} as Profile);
-  const [answers, setAnswers] = useState<(TextAnswer | ChoiceAnswer)[]>();
-  const [userNumber, setUserNumber] = useState(0);
-  const [userId, setUserId] = useState(0);
-  const [fl, setFl] = useState(true);
-
-  useEffect(() => {
-    const answersArray: (TextAnswer | ChoiceAnswer)[] = [];
-    const distributionQuestionsArray: number[] = [];
-
-    if (data && fl) {
-      console.log(data);
-      if (data.recommend.length != 0) {
-        data.distribution.fields?.map((field: Field) => (
-          distributionQuestionsArray.push(field.id)
-        ));
-
-        for (var i = 0; i < data.recommend[userNumber].answers.length; i++) {
-          if (
-            data.recommend[userNumber].answers[i].value &&
-            distributionQuestionsArray.includes(
-              data.recommend[userNumber].answers[i].field.id,
-            )
-          ) {
-            answersArray.push(data.recommend[userNumber].answers[i]);
-          } else if (
-            data.recommend[userNumber].answers[i].indices &&
-            distributionQuestionsArray.includes(
-              data.recommend[userNumber].answers[i].field.id,
-            )
-          ) {
-            answersArray.push(data.recommend[userNumber].answers[i]);
-          } else {
-            continue;
-          }
-        }
-
-        setProfile(data.recommend[userNumber].profile);
-        setAnswers(answersArray);
-        setUserId(data.recommend[userNumber].id);
-        setFl(false);
+  useEffect(
+    () => {
+      if (cursor >= data.recommend.length) {
+        refetch({ distributionId });
       }
-    }
-  }, [data])
 
-  useUpdateEffect(() => {
-    console.log("update")
-    const answersArray: (TextAnswer | ChoiceAnswer)[] = [];
-    const distributionQuestionsArray: number[] = [];
+      window.scrollTo({ top: 0 });
+    },
+    [cursor],
+  );
+  useEffect(() => setCursor(0), [data]);
 
-    if (data) {
-      console.log(data);
-      if (data.recommend.length != 0) {
-        data.distribution.fields?.map((field: Field) => (
-          distributionQuestionsArray.push(field.id)
-        ));
+  const [isResolving, setIsResolving] = useState(false);
 
-        for (var i = 0; i < data.recommend[userNumber].answers.length; i++) {
-          if (
-            data.recommend[userNumber].answers[i].value &&
-            distributionQuestionsArray.includes(
-              data.recommend[userNumber].answers[i].field.id,
-            )
-          ) {
-            answersArray.push(data.recommend[userNumber].answers[i]);
-          } else if (
-            data.recommend[userNumber].answers[i].indices &&
-            distributionQuestionsArray.includes(
-              data.recommend[userNumber].answers[i].field.id,
-            )
-          ) {
-            answersArray.push(data.recommend[userNumber].answers[i]);
-          } else {
-            continue;
-          }
-        }
-
-        setProfile(data.recommend[userNumber].profile);
-        setAnswers(answersArray);
-        setUserId(data.recommend[userNumber].id);
-      }
-    }
-  }, [userNumber]);
+  const [markViewed] = useMutation(MARK_VIEWED);
+  const [subscribe] = useMutation(SUBSCRIBE);
 
   return (
     <div className="flex flex-col items-center last:mb-10 dark:bg-white">
-      {loading && <Loading />}
-      {(data?.recommend.length == 0 || data?.recommend.length == undefined)
+      {cursor >= data.recommend.length
+        ? <Loading />
+        : data.recommend.length === 0
         ? <EmptyFeed />
         : (
           <>
-            <Bio
-              profile={profile}
-            />
-            {answers?.map((answer) =>
-              answer.type === FieldType.Text
+            // Bio part.
+            <Bio profile={data.recommend[cursor].profile} />
+            // User answers part.
+            {data.distribution.fields.map((field) => {
+              const answer = data.recommend[cursor].answers
+                .find((answer) => answer.field.id === field.id);
+
+              if (!answer) return;
+
+              return answer.type === FieldType.Text
                 ? (
                   <TextQuestion
-                    key={answer.field.id}
+                    key={`${data.recommend[cursor].id}:${answer.field.id}`}
                     question={answer.field.question}
                     answer={(answer as TextAnswer).value}
                   />
                 )
                 : (
                   <ChoiceQuestion
-                    key={answer.field.id}
-                    options={(answer.field as ChoiceField).options}
+                    key={`${data.recommend[cursor].id}:${answer.field.id}`}
                     question={answer.field.question}
+                    options={(answer.field as ChoiceField).options}
                     indeces={(answer as ChoiceAnswer).indices}
                   />
-                )
-            )}
-            <button
-              disabled={loading}
-              className="fixed bottom-0"
-              onClick={showNextUser}
-            >
-              <SelectionButton callback={updateAfterSubsciption} userId={userId} />
-            </button>
+                );
+            })}
+            // Buttons part.
+            <div className="flex w-screen justify-center">
+              <button
+                className="bg-black w-3/6 flex justify-center"
+                onClick={async () => {
+                  setIsResolving(true);
+
+                  await markViewed({
+                    variables: { userId: data.recommend[cursor].id },
+                  });
+
+                  setIsResolving(false);
+                  setCursor(cursor + 1);
+                }}
+                disabled={isResolving}
+              >
+                <LeftArrow />
+              </button>
+              <button
+                className="bg-green-600 w-3/6 flex justify-center"
+                onClick={async () => {
+                  setIsResolving(true);
+
+                  await Promise.all([
+                    markViewed({
+                      variables: { userId: data.recommend[cursor].id },
+                    }),
+                    subscribe({
+                      variables: { userId: data.recommend[cursor].id },
+                    }),
+                  ]);
+
+                  setIsResolving(false);
+                  setCursor(cursor + 1);
+                }}
+                disabled={isResolving}
+              >
+                <RightArrow />
+              </button>
+            </div>
           </>
         )}
     </div>
