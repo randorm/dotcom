@@ -30,25 +30,15 @@ export default function Feed() {
     { variables: { distributionId } },
   );
 
-  if (loading) return <Loading />;
-
-  // TODO: handle error
-  if (error) {
-    return <h1>error: {error.message}</h1>
-  }
-  if (!data) {
-    return <h1>no data</h1>
-  }
-
   const [cursor, setCursor] = useState(0);
 
   useEffect(
     () => {
-      if (cursor >= data.recommend.length) {
+      window.scrollTo({ top: 0 });
+
+      if (data && cursor >= data.recommend.length) {
         refetch({ distributionId });
       }
-
-      window.scrollTo({ top: 0 });
     },
     [cursor],
   );
@@ -58,6 +48,16 @@ export default function Feed() {
 
   const [markViewed] = useMutation(MARK_VIEWED);
   const [subscribe] = useMutation(SUBSCRIBE);
+
+  if (loading) return <Loading />;
+
+  // TODO: handle error
+  if (error) {
+    return <h1>error: {error.message}</h1>;
+  }
+  if (!data) {
+    return <h1>no data</h1>;
+  }
 
   return (
     <div className="flex flex-col items-center last:mb-10 dark:bg-white">
