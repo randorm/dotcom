@@ -70,6 +70,10 @@ export default function Feed() {
     return <h1>no data</h1>;
   }
 
+  if (cursor >= data.recommend.length) {
+    return <h1>cursor out of bound</h1>;
+  }
+
   return (
     <div className="flex flex-col items-center last:mb-10 dark:bg-white">
       {isFetching
