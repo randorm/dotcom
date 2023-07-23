@@ -67,7 +67,7 @@ export const TelegramWebAppProvider = (
         }
       })
     }
-  }, []);
+  }, [setAuthToken]);
 
   const value: TelegramWebAppContextType = React.useMemo(() => ({
     isTelegramWebApp,
