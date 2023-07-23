@@ -37,7 +37,7 @@ export default function Feed() {
 
   function updateAfterSubsciption() {
     refetch({ distributionId: Number(id) });
-    window.location.reload();
+    //window.location.reload();
     setUserNumber(0);
   }
 

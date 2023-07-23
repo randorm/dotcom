@@ -44,7 +44,7 @@ export default function SelectionButton({ userId, callback }: ISelectionButton) 
               userId: userId,
             },
           });
-          callback();
+          window.location.reload();
         }}
         className="bg-green-600 w-3/6 flex justify-center"
       >
