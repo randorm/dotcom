@@ -22,6 +22,8 @@ export default function Feed() {
   const router = useRouter();
   const distributionId = Number(router.query.id);
 
+  const [cursor, setCursor] = useState(0);
+
   const { data, loading, error, refetch } = useQuery<{
     distribution: Distribution;
     recommend: readonly User[];
@@ -30,19 +32,28 @@ export default function Feed() {
     { variables: { distributionId } },
   );
 
-  const [cursor, setCursor] = useState(0);
+  const [isFetching, setIsFetching] = useState(false);
 
   useEffect(
     () => {
-      window.scrollTo({ top: 0 });
+      if (!data) return;
 
-      if (data && cursor >= data.recommend.length) {
+      if (cursor >= data.recommend.length) {
+        setIsFetching(true);
         refetch({ distributionId });
       }
+
+      window.scrollTo({ top: 0 });
     },
     [cursor],
   );
-  useEffect(() => setCursor(0), [data]);
+  useEffect(
+    () => {
+      setIsFetching(false);
+      setCursor(0);
+    },
+    [data],
+  );
 
   const [isResolving, setIsResolving] = useState(false);
 
@@ -61,7 +72,7 @@ export default function Feed() {
 
   return (
     <div className="flex flex-col items-center last:mb-10 dark:bg-white">
-      {cursor >= data.recommend.length
+      {isFetching
         ? <Loading />
         : data.recommend.length === 0
         ? <EmptyFeed />
