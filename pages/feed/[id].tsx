@@ -71,7 +71,7 @@ export default function Feed() {
   }
 
   if (cursor >= data.recommend.length) {
-    return <h1>cursor out of bound</h1>;
+    return <h1>cursor out of bound {cursor} {data.recommend.toString()}</h1>;
   }
 
   return (
