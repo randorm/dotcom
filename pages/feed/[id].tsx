@@ -105,7 +105,7 @@ export default function Feed() {
               </button>
               <button
                 className="bg-green-600 w-3/6 flex justify-center"
-                onClick={async () => {
+                onClick={() => {
                   markViewed({
                     variables: { userId: data.recommend[cursor].id },
                   });
