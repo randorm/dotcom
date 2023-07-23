@@ -40,7 +40,7 @@ export default function Feed() {
         refetch({ distributionId });
       }
 
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      window.scrollTo({ top: 0 });
     },
     [cursor],
   );
