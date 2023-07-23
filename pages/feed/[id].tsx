@@ -78,9 +78,7 @@ export default function Feed() {
         ? <EmptyFeed />
         : (
           <>
-            // Bio part.
             <Bio profile={data.recommend[cursor].profile} />
-            // User answers part.
             {data.distribution.fields.map((field) => {
               const answer = data.recommend[cursor].answers
                 .find((answer) => answer.field.id === field.id);
@@ -104,7 +102,6 @@ export default function Feed() {
                   />
                 );
             })}
-            // Buttons part.
             <div className="flex w-screen justify-center">
               <button
                 className="bg-black w-3/6 flex justify-center"
