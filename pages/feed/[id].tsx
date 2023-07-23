@@ -60,7 +60,7 @@ export default function Feed() {
   }
 
   return (
-    <div className="flex flex-col items-center last:mb-10 dark:bg-white">
+    <div className="flex flex-col items-center dark:bg-white">
       {data.recommend.length === 0
         ? <EmptyFeed />
         : cursor >= data.recommend.length
