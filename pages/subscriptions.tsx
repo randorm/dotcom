@@ -69,6 +69,7 @@ export default function Subscriptions() {
               className="bg-black w-2/6 flex justify-center"
               onClick={() => {
                 setCursor((cursor + 1) % data.me.subscriptionCount);
+                window.scrollTo({ top: 0 });
               }}
             >
               <LeftArrow />
@@ -85,7 +86,7 @@ export default function Subscriptions() {
                 ) {
                   unsubscribe({
                     variables: {
-                      distributionId: data.me.subscriptions[cursor].id,
+                      userId: data.me.subscriptions[cursor].id,
                     },
                   });
                   setUnsubscribedIds(
@@ -96,7 +97,7 @@ export default function Subscriptions() {
                 } else {
                   subscribe({
                     variables: {
-                      distributionId: data.me.subscriptions[cursor].id,
+                      userId: data.me.subscriptions[cursor].id,
                     },
                   });
                   setUnsubscribedIds(
@@ -116,6 +117,7 @@ export default function Subscriptions() {
                   (data.me.subscriptionCount + cursor - 1) %
                     data.me.subscriptionCount,
                 );
+                window.scrollTo({ top: 0 });
               }}
             >
               <RightArrow />
