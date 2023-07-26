@@ -13,7 +13,7 @@ export function TextQuestion({ question, answer }: ITextQuestion) {
   return (
     <div className="py-2 w-9/12">
       <p className="text-sm font-light">{question}</p>
-      <p className="text-xs font-extralight opacity-80">{answer}</p>
+      <p className="text-xs font-extralight opacity-80 whitespace-pre-wrap">{answer}</p>
     </div>
   );
 }
@@ -22,7 +22,7 @@ export function ChoiceQuestion({ question, options, indeces }: IChoiceQuestion) 
   return (
     <div className="py-2 w-9/12">
       <p className="text-sm font-light">{question}</p>
-      <p className="text-xs font-extralight opacity-80">{indeces.map((i) => options[i])}</p>
+      <p className="text-xs font-extralight opacity-80 whitespace-pre-wrap">{indeces.map((i) => options[i])}</p>
     </div>
   );
 }

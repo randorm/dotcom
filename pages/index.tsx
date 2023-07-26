@@ -28,7 +28,7 @@ export default function Login() {
   };
   return (
     <div
-      className={`flex flex-col items-center absolute inset-x-0 inset-y-1/3`}
+      className={`flex flex-col items-center absolute inset-x-0 inset-y-1/3 dark:bg-white`}
     >
       <Image className="mb-7 w-5/12" src={logo} alt="Logo" />
       <p className="mb-20 text-black text-opacity-90 text-base font-light">
