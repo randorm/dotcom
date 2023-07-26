@@ -1,6 +1,8 @@
 import Bio from "@/components/Bio";
+import Dislike from "@/components/Dislike";
 import EmptyFeed from "@/components/EmptyFeed";
 import LeftArrow from "@/components/LeftArrow";
+import Like from "@/components/Like";
 import Loading from "@/components/Loading";
 import { ChoiceQuestion, TextQuestion } from "@/components/Question";
 import RightArrow from "@/components/RightArrow";
@@ -64,14 +66,22 @@ export default function Subscriptions() {
           })}
           <div className="flex w-screen justify-center">
             <button
-              className={`flex justify-center ${
+              className="bg-black w-2/6 flex justify-center"
+              onClick={() => {
+                setCursor((cursor + 1) % data.me.subscriptionCount);
+              }}
+            >
+              <LeftArrow />
+            </button>
+            <button
+              className={`w-2/6 flex justify-center" ${
                 unsubscribedIds.includes(data.me.subscriptions[cursor].id)
-                  ? "bg-red-500"
-                  : "bg-green-500"
+                  ? "bg-green-500"
+                  : "bg-red-500"
               }`}
               onClick={() => {
                 if (
-                  unsubscribedIds.includes(data.me.subscriptions[cursor].id)
+                  !unsubscribedIds.includes(data.me.subscriptions[cursor].id)
                 ) {
                   unsubscribe({
                     variables: {
@@ -96,19 +106,11 @@ export default function Subscriptions() {
               }}
             >
               {unsubscribedIds.includes(data.me.subscriptions[cursor].id)
-                ? "Unsubscribe"
-                : "Subscribe"}
+                ? <Like />
+                : <Dislike /> }
             </button>
             <button
-              className="bg-black w-3/6 flex justify-center"
-              onClick={() => {
-                setCursor((cursor + 1) % data.me.subscriptionCount);
-              }}
-            >
-              <LeftArrow />
-            </button>
-            <button
-              className="bg-black w-3/6 flex justify-center"
+              className="bg-black w-2/6 flex justify-center"
               onClick={() => {
                 setCursor(
                   (data.me.subscriptionCount + cursor - 1) %
@@ -124,3 +126,5 @@ export default function Subscriptions() {
     </div>
   );
 }
+
+// subscriptions
