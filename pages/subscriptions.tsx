@@ -107,7 +107,7 @@ export default function Subscriptions() {
             >
               {unsubscribedIds.includes(data.me.subscriptions[cursor].id)
                 ? <Like />
-                : <Like /> }
+                : <Dislike /> }
             </button>
             <button
               className="bg-black w-2/6 flex justify-center"
