@@ -55,3 +55,39 @@ query($distributionId: Int!) {
   }
 }
 `);
+
+export const SUBSCRIPTIONS = gql(`
+query Me {
+  me {
+    subscriptionCount
+    subscriptions {
+      id
+      profile {
+        firstName
+        lastName
+        gender
+        birthday
+        bio
+      }
+      answers {
+        type
+        ... on ChoiceAnswer {
+          field {
+            id
+            question
+            options
+          }
+          indices
+        }
+        ... on TextAnswer {
+        field {
+          id
+          question
+        }
+        value
+      }
+      }
+    }
+  }
+}
+`);

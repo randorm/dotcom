@@ -19,3 +19,13 @@ mutation Subscribe($userId: Int!) {
   }
 }
 `;
+
+export const UNSUBSCRIBE = gql`
+mutation Unsubscribe($userId: Int!) {
+  unsubscribe(userId: $userId) {
+    user {
+      id
+    }
+  }
+}
+`;
