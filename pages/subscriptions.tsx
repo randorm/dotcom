@@ -74,7 +74,7 @@ export default function Subscriptions() {
               <LeftArrow />
             </button>
             <button
-              className={`w-2/6 flex justify-center" ${
+              className={`w-2/6 flex justify-center align-middle content-center" ${
                 unsubscribedIds.includes(data.me.subscriptions[cursor].id)
                   ? "bg-green-500"
                   : "bg-red-500"
