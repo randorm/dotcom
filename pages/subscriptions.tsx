@@ -90,9 +90,7 @@ export default function Subscriptions() {
                     },
                   });
                   setUnsubscribedIds(
-                    unsubscribedIds.filter(
-                      (id) => id !== data.me.subscriptions[cursor].id,
-                    ),
+                    unsubscribedIds.concat(data.me.subscriptions[cursor].id),
                   );
                 } else {
                   subscribe({
@@ -101,7 +99,9 @@ export default function Subscriptions() {
                     },
                   });
                   setUnsubscribedIds(
-                    unsubscribedIds.concat(data.me.subscriptions[cursor].id),
+                    unsubscribedIds.filter(
+                      (id) => id !== data.me.subscriptions[cursor].id,
+                    ),
                   );
                 }
               }}
