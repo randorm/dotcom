@@ -35,7 +35,7 @@ const addAuthLink = (token?: string) =>
       return {
         headers: {
           ...headers,
-          Authorization: `Bearer ${token}`,
+          //authorization: `Bearer ${token}`,
         },
       };
     } else {
@@ -61,7 +61,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 
 // Hook to create a new Apollo client
 export const useApolloClient = () => {
-  const [authToken, setAuthToken] = useLocalStorage('token', undefined)
+  const [authToken] = useLocalStorage('token', undefined)
   const client = new ApolloClient({
     link: from([addAuthLink(authToken), errorLink, retryLink, httpLink]),
     cache: new InMemoryCache(),

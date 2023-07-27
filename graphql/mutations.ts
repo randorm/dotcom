@@ -1,5 +1,13 @@
 import { gql } from '@apollo/client';
 
+export const CREATE_DISTRIBUTION = gql`
+  mutation CreateDistribution($name: String!) {
+    createDistribution(name: $name) {
+      id
+    } 
+  }
+`;
+
 export const MARK_VIEWED = gql`
 mutation MarkViewed($userId: Int!) {
   markViewed(userId: $userId) {
@@ -21,7 +29,7 @@ mutation Subscribe($userId: Int!) {
 `;
 
 export const UNSUBSCRIBE = gql`
-mutation Unsubscribe($userId: Int!) {
+mutation Mutation($userId: Int!) {
   unsubscribe(userId: $userId) {
     user {
       id

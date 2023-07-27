@@ -8,7 +8,6 @@ export default function Document() {
           httpEquiv="Content-Security-Policy"
           content="frame-src https://oauth.telegram.org"
         />
-        <script src="https://telegram.org/js/telegram-web-app.js" async></script>
       </Head>
       <body>
         <Main />
