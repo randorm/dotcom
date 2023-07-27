@@ -46,27 +46,25 @@ export default function Subscriptions() {
       {data.me.subscriptionCount === 0 ? <EmptyFeed /> : (
         <>
           <Bio profile={data.me.subscriptions[cursor].profile} />
-          <div className="last:mb-10">
-            {data.me.subscriptions[cursor].answers.map((answer) => {
-              return answer.type === FieldType.Text
-                ? (
-                  <TextQuestion
-                    key={answer.field.id}
-                    question={answer.field.question}
-                    answer={(answer as TextAnswer).value}
-                  />
-                )
-                : (
-                  <ChoiceQuestion
-                    key={answer.field.id}
-                    question={answer.field.question}
-                    options={(answer.field as ChoiceField).options}
-                    indeces={(answer as ChoiceAnswer).indices}
-                  />
-                );
-            })}
-          </div>
-          <div className="flex w-screen justify-center fixed bottom-0">
+          {data.me.subscriptions[cursor].answers.map((answer) => {
+            return answer.type === FieldType.Text
+              ? (
+                <TextQuestion
+                  key={answer.field.id}
+                  question={answer.field.question}
+                  answer={(answer as TextAnswer).value}
+                />
+              )
+              : (
+                <ChoiceQuestion
+                  key={answer.field.id}
+                  question={answer.field.question}
+                  options={(answer.field as ChoiceField).options}
+                  indeces={(answer as ChoiceAnswer).indices}
+                />
+              );
+          })}
+          <div className="flex w-screen justify-center">
             <button
               className="bg-black w-2/6 flex justify-center"
               onClick={() => {
@@ -110,7 +108,7 @@ export default function Subscriptions() {
             >
               {unsubscribedIds.includes(data.me.subscriptions[cursor].id)
                 ? <Like />
-                : <Dislike />}
+                : <Dislike /> }
             </button>
             <button
               className="bg-black w-2/6 flex justify-center"
