@@ -1,98 +1,125 @@
 import Bio from "@/components/Bio";
 import EmptyFeed from "@/components/EmptyFeed";
+import LeftArrow from "@/components/LeftArrow";
 import Loading from "@/components/Loading";
 import { ChoiceQuestion, TextQuestion } from "@/components/Question";
-import SelectionButton from "@/components/SelectionButton";
+import RightArrow from "@/components/RightArrow";
+import { MARK_VIEWED, SUBSCRIBE } from "@/graphql/mutations";
 import { FEED } from "@/graphql/queries";
 import {
   ChoiceAnswer,
-  Field,
-  Profile,
+  ChoiceField,
+  Distribution,
+  FieldType,
   TextAnswer,
+  User,
 } from "@/lib/__codegen__/graphql";
-import { useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import Error404 from "../404";
 
 export default function Feed() {
   const router = useRouter();
-  const { id } = router.query;
-  
-  function showNextUser() {
-    if (data.recommend.length > userNumber + 1) {
-      setUserNumber(userNumber + 1);
-    } else {
-      setUserNumber(0);
-      refetch({ distributionId: Number(id) });
-    }
-  }
+  const distributionId = Number(router.query.id);
 
-  const { data, error, loading, refetch } = useQuery(FEED, {
-    variables: { distributionId: Number(id) },
-  });
-  const [profile, setProfile] = useState<Profile>({} as Profile);
-  const [textAnswers, setTextAnswer] = useState<TextAnswer[]>();
-  const [choiceAnswers, setChoiceAnswer] = useState<ChoiceAnswer[]>();
-  const [userNumber, setUserNumber] = useState(0);
-  const [userId, setUserId] = useState(0);
-  const textAnswersArray: TextAnswer[] = [];
-  const choiceAnswersArray: ChoiceAnswer[] = [];
-  const distributionQuestionsArray: number[] = [];
-  useEffect(() => {
-    if (data) {
-      data.distribution.fields?.map((field: Field) => (
-        distributionQuestionsArray.push(field.id)
-      ));
+  const [cursor, setCursor] = useState(0);
 
-      for (var i = 0; i < data.recommend[userNumber].answers.length; i++) {
-        if (
-          data.recommend[userNumber].answers[i].value &&
-          distributionQuestionsArray.includes(
-            data.recommend[userNumber].answers[i].field.id,
-          )
-        ) {
-          textAnswersArray.push(data.recommend[userNumber].answers[i]);
-        } else if (
-          data.recommend[userNumber].answers[i].indices &&
-          distributionQuestionsArray.includes(
-            data.recommend[userNumber].answers[i].field.id,
-          )
-        ) {
-          choiceAnswersArray.push(data.recommend[userNumber].answers[i]);
-        } else {
-          continue;
-        }
+  const { data, loading, error, refetch } = useQuery<{
+    distribution: Distribution;
+    recommend: readonly User[];
+  }>(
+    FEED,
+    { variables: { distributionId } },
+  );
+
+  useEffect(
+    () => {
+      if (!data) return;
+
+      if (cursor >= data.recommend.length) {
+        refetch({ distributionId });
       }
 
-      setProfile(data.recommend[userNumber].profile);
-      setTextAnswer(textAnswersArray);
-      setChoiceAnswer(choiceAnswersArray);
-      setUserId(data.recommend[userNumber].id);
-    }
-  }, [data, userNumber]);
+      window.scrollTo({ top: 0 });
+    },
+    [cursor],
+  );
+  useEffect(() => setCursor(0), [data]);
+
+  const [markViewed] = useMutation(MARK_VIEWED);
+  const [subscribe] = useMutation(SUBSCRIBE);
+
+  if (loading) return <Loading />;
+
+  if (error) {
+    return <Error404 />;
+  }
+  if (!data) {
+    return <EmptyFeed />;
+  }
 
   return (
-    <div className="flex flex-col items-center last:mb-10">
-      {data?.recommend.length == 0 && <EmptyFeed />}
-      {loading && <Loading />}
-      <Bio
-        profile={profile}
-      />
-      {textAnswers?.map((textAnswer) => (
-        <TextQuestion
-          question={textAnswer.field.question}
-          answer={textAnswer.value}
-        />
-      ))}
-      {choiceAnswers?.map((choiceAnswer) => (
-        <ChoiceQuestion
-          question={choiceAnswer.field.question}
-          indeces={choiceAnswer.indices}
-        />
-      ))}
-      <button className="fixed bottom-0" onClick={showNextUser}>
-        <SelectionButton userId={userId}/>
-      </button>
+    <div className="flex flex-col items-center dark:bg-white">
+      {data.recommend.length === 0
+        ? <EmptyFeed />
+        : cursor >= data.recommend.length
+        ? <Loading />
+        : (
+          <>
+            <Bio profile={data.recommend[cursor].profile} />
+            {data.distribution.fields.map((field) => {
+              const answer = data.recommend[cursor].answers
+                .find((answer) => answer.field.id === field.id);
+
+              if (!answer) return;
+
+              return answer.type === FieldType.Text
+                ? (
+                  <TextQuestion
+                    key={`${data.recommend[cursor].id}:${answer.field.id}`}
+                    question={answer.field.question}
+                    answer={(answer as TextAnswer).value}
+                  />
+                )
+                : (
+                  <ChoiceQuestion
+                    key={`${data.recommend[cursor].id}:${answer.field.id}`}
+                    question={answer.field.question}
+                    options={(answer.field as ChoiceField).options}
+                    indeces={(answer as ChoiceAnswer).indices}
+                  />
+                );
+            })}
+            <div className="flex w-screen justify-center">
+              <button
+                className="bg-black w-3/6 flex justify-center"
+                onClick={() => {
+                  markViewed({
+                    variables: { userId: data.recommend[cursor].id },
+                  });
+                  setCursor(cursor + 1);
+                }}
+              >
+                <LeftArrow />
+              </button>
+              <button
+                className="bg-green-600 w-3/6 flex justify-center"
+                onClick={() => {
+                  markViewed({
+                    variables: { userId: data.recommend[cursor].id },
+                  });
+                  subscribe({
+                    variables: { userId: data.recommend[cursor].id },
+                  });
+                  setCursor(cursor + 1);
+                }}
+              >
+                <RightArrow />
+              </button>
+            </div>
+          </>
+        )}
     </div>
   );
 }

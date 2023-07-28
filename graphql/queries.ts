@@ -54,6 +54,15 @@ query($userId: Int!) {
   }
 `);
 
+export const ME = gql(`
+query Me {
+  me {
+    id
+    username
+  }
+}
+`);
+
 export const FEED = gql(`
 query($distributionId: Int!) {
   distribution(distributionId: $distributionId) {
@@ -80,6 +89,7 @@ query($distributionId: Int!) {
       bio
     }
     answers {
+      type
       ...on ChoiceAnswer {
         field {
           id
@@ -98,4 +108,40 @@ query($distributionId: Int!) {
     }
   }
 }
-`)
+`);
+
+export const SUBSCRIPTIONS = gql(`
+query Me {
+  me {
+    subscriptionCount
+    subscriptions {
+      id
+      profile {
+        firstName
+        lastName
+        gender
+        birthday
+        bio
+      }
+      answers {
+        type
+        ... on ChoiceAnswer {
+          field {
+            id
+            question
+            options
+          }
+          indices
+        }
+        ... on TextAnswer {
+        field {
+          id
+          question
+        }
+        value
+      }
+      }
+    }
+  }
+}
+`);

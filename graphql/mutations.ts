@@ -29,7 +29,7 @@ mutation Subscribe($userId: Int!) {
 `;
 
 export const UNSUBSCRIBE = gql`
-mutation Mutation($userId: Int!) {
+mutation Unsubscribe($userId: Int!) {
   unsubscribe(userId: $userId) {
     user {
       id
