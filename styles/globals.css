@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.distributionSection {
+    @apply m-1 pr-4 py-4 w-110 rounded-md border border-neutral-900 border-opacity-20 flex justify-between items-center font-extralight;
+}
+
+.state {
+    @apply bg-opacity-40 w-20 text-center rounded-lg text-black text-opacity-70 text-[11px] font-normal ;
+}
+
+.bioSection {
+    @apply text-xs font-extralight mt-6 mb-3 p-3 w-9/12 rounded-md bg-opacity-30 border border-neutral-900 border-opacity-20;
+}
+
+.btn {
+    @apply bg-neutral-800 rounded-md py-1 px-3 flex justify-around items-center hover:cursor-pointer;
+}
+
+.deleteBtn {
+    @apply border-red-400 border rounded-md py-1 px-3 flex justify-around items-center hover:cursor-pointer mr-px;
+}
+
+.continueBtn {
+    @apply border-black border-opacity-30 border rounded-md py-1 px-3 flex justify-around items-center hover:cursor-pointer ml-px;
+}
+
+.area {
+    @apply m-1 p-2 rounded-md border border-neutral-900 border-opacity-20 font-extralight;
+}

@@ -1,0 +1,27 @@
+export interface ITextQuestion {
+  readonly question: string;
+  readonly answer: string;
+}
+
+export interface IChoiceQuestion {
+  readonly question: string;
+  readonly indeces: number[];
+}
+
+export function TextQuestion({ question, answer }: ITextQuestion) {
+  return (
+    <div className="py-2 w-9/12">
+      <p className="text-sm font-light">{question}</p>
+      <p className="text-xs font-extralight opacity-80">{answer}</p>
+    </div>
+  );
+}
+
+export function ChoiceQuestion({ question, indeces }: IChoiceQuestion) {
+  return (
+    <div className="py-2 w-9/12">
+      <p className="text-sm font-light">{question}</p>
+      <p className="text-xs font-extralight opacity-80">{indeces}</p>
+    </div>
+  );
+}
