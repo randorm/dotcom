@@ -21,7 +21,7 @@ export default function Login() {
     setAuthToken(token)
 
     if (token !== undefined) {
-      router.push("https://t.me/randorm_bot/");
+      router.push("https://randorm.com/home");
     } else {
       router.push("https://t.me/randorm_bot/");
     }
