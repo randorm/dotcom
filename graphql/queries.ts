@@ -27,16 +27,36 @@ export const DISTRIBUTIONS = gql(`
 `);
 
 export const GET_DISTRIBUTION = gql(`
-query($distributionId: Int!, $userId: Int!) {
-    distribution(distributionId: $distributionId) {
-      name
-    },
-    user(userId: $userId) {
-      profile {
-        firstName
-        lastName
+query($distributionId: Int!) {
+  distribution(distributionId: $distributionId) {
+    id
+    fieldCount
+    name
+    fields {
+      type
+      ... on ChoiceField {
+        id
+        question
+        required
+        options
+        multiple
+      }
+      ... on TextField {
+        id
+        sample
+        required
+        question
+        format
       }
     }
+  },
+  me {
+    username
+    profile {
+      firstName
+      lastName
+    }
+  }
   }
 `)
 

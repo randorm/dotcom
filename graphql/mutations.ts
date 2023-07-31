@@ -37,3 +37,29 @@ mutation Unsubscribe($userId: Int!) {
   }
 }
 `;
+
+export const UPDATE_DISTRIBUTION_FIELDS = gql`
+mutation UpdateDistributionFields($distributionId: Int!, $fieldIds: [Int!]!) {
+  updateDistributionFields(distributionId: $distributionId, fieldIds: $fieldIds) {
+    fields {
+      id
+    }
+  }
+}
+`;
+
+export const CREATE_CHOICE_FIELD = gql`
+mutation CreateChoiceField($required: Boolean!, $question: String!, $multiple: Boolean!, $options: [String!]!) {
+  createChoiceField(required: $required, question: $question, multiple: $multiple, options: $options) {
+    id
+  }
+}
+`;
+
+export const CREATE_TEXT_FIELD = gql`
+mutation CreateTextField($required: Boolean!, $question: String!) {
+  createTextField(required: $required, question: $question) {
+    id
+  }
+}
+`;
