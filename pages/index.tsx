@@ -20,11 +20,11 @@ export default function Login() {
     const token = await authUsingTelegram(user);
     setAuthToken(token)
 
-    if (token !== undefined) {
-      router.push("https://randorm.com/home");
-    } else {
-      router.push("https://t.me/randorm_bot/");
-    }
+    // if (token !== undefined) {
+    //   router.push("https://randorm.com/home");
+    // } else {
+    //   router.push("https://t.me/randorm_bot/");
+    // }
   };
   return (
     <div
