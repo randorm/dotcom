@@ -94,7 +94,7 @@ export default function CurrentDistribution() {
   }
 
   function closeModal() {
-    setIsOpen(true);
+    setIsOpen(false);
   }
 
   const { data, error, loading, refetch } = useQuery<{

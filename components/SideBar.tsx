@@ -48,7 +48,7 @@ export default function SideBar({ state, participants, id }: ISideBar) {
   }
 
   function closeModal() {
-    setIsOpen(true);
+    setIsOpen(false);
   }
 
   function updateDistributionState() {

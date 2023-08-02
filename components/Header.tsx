@@ -3,6 +3,7 @@ import Link from "next/link";
 export interface IHeader {
     readonly firstname: string;
     readonly lastname: string;
+    readonly children: never[];
 }
 
 export default function Header({firstname, lastname}: IHeader) {
