@@ -16,11 +16,21 @@ export interface ISideBar {
 
 export default function SideBar({ state, participants, id }: ISideBar) {
   const [isOpen, setIsOpen] = useState(false);
-  const [deleteDistr, { data: deleted }] = useMutation(
+  const [deleteDistr, {}] = useMutation(
     DELETE_DISTRIBUTION,
+    {
+      onCompleted() {
+        window.location.reload();
+      },
+    },
   );
-  const [updateDistrState, { data: updatedState }] = useMutation(
+  const [updateDistrState] = useMutation(
     UPDATE_DISTRIBUTION_STATE,
+    {
+      onCompleted() {
+        window.location.reload();
+      },
+    },
   );
 
   function deleteDistribution() {
@@ -52,9 +62,6 @@ export default function SideBar({ state, participants, id }: ISideBar) {
           : "CLOSED"),
       },
     });
-    if (updatedState) {
-      window.location.reload();
-    }
   }
 
   return (
@@ -100,7 +107,7 @@ export default function SideBar({ state, participants, id }: ISideBar) {
                   <div className="mt-4 flex justify-around">
                     <button
                       className=" w-40 inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                      onClick={deleteDistribution}
+                      onClick={() => deleteDistribution()}
                     >
                       Delete
                     </button>
@@ -179,11 +186,12 @@ export default function SideBar({ state, participants, id }: ISideBar) {
             {state == DistributionState.Preparing
               ? (
                 <div className={"continueBtn"}>
-                  <p
+                  <button
                     className={`text-opacity-50 text-black text-sm font-extralight`}
+                    onClick={() => updateDistributionState()}
                   >
                     Next Step
-                  </p>
+                  </button>
                 </div>
               )
               : state == DistributionState.Answering
@@ -191,7 +199,7 @@ export default function SideBar({ state, participants, id }: ISideBar) {
                 <div className={"continueBtn"}>
                   <button
                     className={`text-opacity-50 text-black text-sm font-extralight`}
-                    onClick={updateDistributionState}
+                    onClick={() => updateDistributionState()}
                   >
                     Open Feed
                   </button>
@@ -202,7 +210,7 @@ export default function SideBar({ state, participants, id }: ISideBar) {
                 <div className={"continueBtn"}>
                   <button
                     className={`text-opacity-50 text-black text-sm font-extralight`}
-                    onClick={updateDistributionState}
+                    onClick={() => updateDistributionState()}
                   >
                     Distribute
                   </button>

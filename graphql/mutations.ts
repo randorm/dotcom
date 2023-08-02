@@ -83,7 +83,7 @@ mutation DeleteDistribution($distributionId: Int!) {
 export const UPDATE_DISTRIBUTION_STATE = gql`
 mutation UpdateDistributionState($distributionId: Int!, $state: DistributionState!) {
   updateDistributionState(distributionId: $distributionId, state: $state) {
-    id
+    state
   }
 }
 `;
