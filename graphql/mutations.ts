@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql } from "@apollo/client";
 
 export const CREATE_DISTRIBUTION = gql`
   mutation CreateDistribution($name: String!) {
@@ -52,6 +52,16 @@ export const CREATE_CHOICE_FIELD = gql`
 mutation CreateChoiceField($required: Boolean!, $question: String!, $multiple: Boolean!, $options: [String!]!) {
   createChoiceField(required: $required, question: $question, multiple: $multiple, options: $options) {
     id
+    type
+    creator {
+      id
+    }
+    required
+    question
+    multiple
+    options
+    answerCount
+    createdAt
   }
 }
 `;

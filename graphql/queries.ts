@@ -10,13 +10,13 @@ export const GET_ME = gql(`
 `);
 
 export const DISTRIBUTIONS = gql(`
-  query($userId: Int!) {
+  query {
     distributions {
       id
       name
       state
     },
-    user(userId: $userId) {
+    me {
       profile {
         firstName
         lastName
@@ -32,6 +32,7 @@ query($distributionId: Int!) {
     id
     fieldCount
     name
+    state
     fields {
       type
       ... on ChoiceField {
@@ -48,6 +49,12 @@ query($distributionId: Int!) {
         question
         format
       }
+    }
+    ... on AnsweringDistribution {
+      participantCount
+    }
+    ... on GatheringDistribution {
+      participantCount
     }
   },
   me {

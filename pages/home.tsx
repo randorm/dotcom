@@ -7,9 +7,7 @@ import { useMutation, useQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
 
 export default function Home() {
-  const { data, error } = useQuery(DISTRIBUTIONS, {
-    variables: { userId: 1 }
-  });
+  const { data, error } = useQuery(DISTRIBUTIONS);
   const [distr, setDistr] = useState<Distribution[]>([]);
   const [distributionNumber, setDistributionNumber] = useState("");
   const [firstname, setFirstname] = useState("");
@@ -18,8 +16,8 @@ export default function Home() {
   useEffect(() => {
     if (data) {
       setDistr(data.distributions);
-      setFirstname(data.user.profile.firstName);
-      setLastname(data.user.profile.lastName);
+      setFirstname(data.me.profile.firstName);
+      setLastname(data.me.profile.lastName);
       setDistributionNumber(data.distributionCount);
     }
   }, [data]);
