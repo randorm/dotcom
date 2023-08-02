@@ -24,15 +24,13 @@ export default function SideBar({ state, participants, id }: ISideBar) {
   );
 
   function deleteDistribution() {
+    closeModal();
+    router.push("http://randorm.com/home");
     deleteDistr({
       variables: {
         distributionId: id,
       },
     });
-    if (deleted) {
-      closeModal();
-      router.push("http://randorm.com/home");
-    }
   }
 
   function openModal() {
