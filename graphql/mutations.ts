@@ -73,3 +73,17 @@ mutation CreateTextField($required: Boolean!, $question: String!) {
   }
 }
 `;
+
+export const DELETE_DISTRIBUTION = gql`
+mutation DeleteDistribution($distributionId: Int!) {
+  deleteDistribution(distributionId: $distributionId)
+}
+`;
+
+export const UPDATE_DISTRIBUTION_STATE = gql`
+mutation UpdateDistributionState($distributionId: Int!, $state: DistributionState!) {
+  updateDistributionState(distributionId: $distributionId, state: $state) {
+    id
+  }
+}
+`;

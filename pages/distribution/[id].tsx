@@ -12,6 +12,7 @@ import {
   FieldType,
   GatheringDistribution,
   TextField,
+  User,
 } from "@/lib/__codegen__/graphql";
 import Header from "@/components/Header";
 import AddButton from "@/components/AddButton";
@@ -30,7 +31,6 @@ import {
 export default function CurrentDistribution() {
   const router = useRouter();
   const { id } = router.query;
-  const [numberOfQuestions, setNumberOfQuestions] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
   const [fields, setFields] = useState<Field[]>([]);
   const [choiceField, { data: choice }] = useMutation(CREATE_CHOICE_FIELD);
@@ -39,38 +39,47 @@ export default function CurrentDistribution() {
     UPDATE_DISTRIBUTION_FIELDS,
   );
 
-  const [numberOfFields, setNumberOfFields] = useState(0);
-
   function createChoiceField() {
     setIsOpen(false);
-    choiceField({
-      variables: {
-        required: false,
-        question: "Question",
-        multiple: false,
-        options: ["A", "B", "C"],
-      },
-    });
-    if (choice) {
-      let updatedList = fields;
-      updatedList.push(choice.createChoiceField);
-      setFields(updatedList);
-      let fieldsIds = updatedList.map((field) => {
-        return field.id;
-      });
-      updateFields({
-        variables: {
-          distributionId: Number(id),
-          fieldIds: fieldsIds,
-        },
-      });
-    }
+    // choiceField({
+    //   variables: {
+    //     required: false,
+    //     question: "Question",
+    //     multiple: false,
+    //     options: ["A", "B", "C"],
+    //   },
+    // });
+    // if (choice) {
+    type ChoiceFieldNew = Pick<
+      ChoiceField,
+      "multiple" | "options" | "question" | "required"
+    >;
+    let updatedList = fields;
+    console.log(updatedList)
+    let field: ChoiceFieldNew = {
+      multiple: false,
+      options: ["A", "B", "C"],
+      question: "Question",
+      required: true,
+    };
+    console.log(field)
+    updatedList.push(field as ChoiceField);
+    setFields(updatedList);
+    // let fieldsIds = updatedList.map((field) => {
+    //   return field.id;
+    // });
+    // updateFields({
+    //   variables: {
+    //     distributionId: Number(id),
+    //     fieldIds: fieldsIds,
+    //   },
+    // });
+    //}
     console.log(fields);
-    setNumberOfFields(numberOfFields + 1);
   }
 
   function createTextField() {
-    setIsOpen(false);
+    closeModal()
     textField({
       variables: {
         required: false,
@@ -88,32 +97,16 @@ export default function CurrentDistribution() {
     setIsOpen(true);
   }
 
-  const { data, error, loading, refetch } = useQuery(GET_DISTRIBUTION, {
+  const { data, error, loading, refetch } = useQuery<{
+    distribution: Distribution;
+    me: User;
+  }>(GET_DISTRIBUTION, {
     variables: { distributionId: Number(id) },
   });
 
-  const [distr, setDistr] = useState<Distribution>({} as Distribution);
-  const [firstname, setFirstname] = useState("");
-  const [lastname, setLastname] = useState("");
-  useEffect(() => {
-    refetch({ distributionId: Number(id) });
-    console.log("dsddd");
-    setFields(fields);
-    console.log(fields);
-  }, [numberOfFields]);
-
   useEffect(() => {
     if (data) {
-      setNumberOfFields(data.distribution.fieldCount);
-      setDistr(data.distribution);
-      let updatedList: Field[] = [];
-      data.distribution.fields.map((field) => {
-        updatedList.push(field);
-      });
-      setFields(updatedList);
-      setFirstname(data.me.profile.firstName);
-      setLastname(data.me.profile.lastName);
-      setNumberOfQuestions(updatedList.length);
+      setFields(data.distribution.fields);
     }
   }, [data]);
 
@@ -186,17 +179,21 @@ export default function CurrentDistribution() {
           </div>
         </Dialog>
       </Transition>
-      <Header firstname={firstname} lastname={lastname}></Header>
+      <Header
+        firstname={data.me.profile.firstName}
+        lastname={data.me.profile.lastName}
+      >
+      </Header>
       <div className="flex flex-col mt-20">
         <div className="grid justify-items-center">
           <div className="grid grid-cols-2 mb-4 gap-x-150">
             <div className="font-extralight text-xl">
-              <p>{distr.name}</p>
+              <p>{data.distribution.name}</p>
               <p className="text-sm opacity-40">
-                {numberOfQuestions} questions
+                {data.distribution.fieldCount} questions
               </p>
             </div>
-            {distr.state == DistributionState.Preparing
+            {data.distribution.state == DistributionState.Preparing
               ? (
                 <div className="flex">
                   <button onClick={() => window.location.reload()}>
@@ -209,14 +206,15 @@ export default function CurrentDistribution() {
                   </button>
                 </div>
               )
-              : distr.state == DistributionState.Answering ||
-                  distr.state == DistributionState.Gathering
+              : data.distribution.state == DistributionState.Answering ||
+                  data.distribution.state == DistributionState.Gathering
               ? (
                 <div className="flex items-baseline">
                   <img className="mr-4 w-3" src="../online.svg" alt="online" />
                   <p>
                     {`${
-                      (distr as AnsweringDistribution).participantCount
+                      (data.distribution as AnsweringDistribution)
+                        .participantCount
                     } PARTICIPATED`}
                   </p>
                 </div>
@@ -226,7 +224,7 @@ export default function CurrentDistribution() {
           <div className="flex w-10/12 justify-items-center">
             <div
               className={`flex-none flex-col w-8/12 ${
-                distr.state == DistributionState.Preparing
+                data.distribution.state == DistributionState.Preparing
                   ? ""
                   : "pointer-events-none"
               }`}
@@ -257,7 +255,12 @@ export default function CurrentDistribution() {
               })}
             </div>
             <div className="flex-auto w-9/12">
-              <SideBar state={distr.state} participants={(distr as GatheringDistribution).participantCount} />
+              <SideBar
+                state={data.distribution.state}
+                participants={(data.distribution as GatheringDistribution)
+                  .participantCount}
+                  id={data.distribution.id}
+              />
             </div>
           </div>
         </div>

@@ -1,8 +1,8 @@
 import Link from "next/link";
 
-interface IHeader {
-    readonly firstname: string
-    readonly lastname: string
+export interface IHeader {
+    readonly firstname: string;
+    readonly lastname: string;
 }
 
 export default function Header({firstname, lastname}: IHeader) {
