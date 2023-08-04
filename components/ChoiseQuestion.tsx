@@ -1,4 +1,8 @@
+import { UPDATE_DISTRIBUTION_FIELDS } from "@/graphql/mutations";
+import { Field } from "@/lib/__codegen__/graphql";
+import { useMutation } from "@apollo/client";
 import { useEffect, useState } from "react";
+import Delete from "./Delete";
 import Option from "./Option";
 
 export interface IChoiceQuestion {
@@ -6,14 +10,29 @@ export interface IChoiceQuestion {
   readonly options: string[];
   readonly required: boolean;
   readonly multiple: boolean;
+  readonly fields: Field[];
+  readonly id: number;
+  readonly distributionId: number;
 }
 
 export default function ChoiseQuestion(
-  { question, options, required, multiple }: IChoiceQuestion,
+  { question, options, required, multiple, fields, id, distributionId }: IChoiceQuestion,
 ) {
   const [checked, setChecked] = useState(false);
   const [questionText, setQuestionText] = useState("");
   const [selectedChoice, setSelectedChoice] = useState("");
+  const [updateFields] = useMutation(UPDATE_DISTRIBUTION_FIELDS);
+
+function deleteField() {
+  let updatedList = fields.filter((field) => field.id != id);  
+  let fieldsIds = updatedList.map((field) => {return field.id})
+  updateFields({
+    variables: {
+      distributionId: distributionId,
+      fieldIds: fieldsIds
+    }
+  })
+}
 
   useEffect(() => {
     setChecked(required);
@@ -35,9 +54,8 @@ export default function ChoiseQuestion(
           className="w-full"
         />
         <div className="ml-4 grid grid-cols-3 gap-1">
-          <img src="../edit.svg" alt="" />
           <img src="../swap.svg" alt="" />
-          <img src="../delete.svg" alt="" />
+          <button onClick={deleteField}><Delete /></button>
         </div>
       </div>
       <div className="grid grid-cols-2 gap-52 p-1">

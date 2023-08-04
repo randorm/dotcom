@@ -32,61 +32,156 @@ export default function CurrentDistribution() {
   const router = useRouter();
   const { id } = router.query;
   const [isOpen, setIsOpen] = useState(false);
+  const [cursor, setCursor] = useState(-1);
   const [fields, setFields] = useState<Field[]>([]);
-  const [choiceField, { data: choice }] = useMutation(CREATE_CHOICE_FIELD);
-  const [textField] = useMutation(CREATE_TEXT_FIELD);
-  const [updateFields, { data: updated }] = useMutation(
-    UPDATE_DISTRIBUTION_FIELDS,
+  const [newFields, setNewFields] = useState<Field[]>([]);
+  const [choiceField, { data: createdChoiceField }] = useMutation(
+    CREATE_CHOICE_FIELD,
   );
+  const [textField, { data: createdTextField }] = useMutation(
+    CREATE_TEXT_FIELD,
+    {
+      onCompleted() {
+        setCursor(cursor + 1);
+      },
+    },
+  );
+  const [updateFields, { error: g }] = useMutation(
+    UPDATE_DISTRIBUTION_FIELDS,
+    {
+      onCompleted() {
+        window.location.reload();
+      },
+    },
+  );
+  let fieldsIds: number[] = [];
+  useEffect(() => {
+    console.log("in new");
+    console.log(cursor);
+    console.log(newFields.length);
+    if (cursor + 1 == newFields.length && newFields.length != 0) {
+      console.log("in new deeper");
+      let updatedList = fields.slice(0, fields.length - newFields.length);
+
+      if (updatedList.length == 0) {
+        updatedList = newFields;
+      } else {
+        updatedList = updatedList.concat(newFields);
+      }
+      console.log(JSON.stringify(updatedList))
+      console.log(JSON.stringify(updatedList[0]))
+      try {
+        fieldsIds = updatedList.map((field) => {
+          return field.id;
+        });
+      } catch(e) {
+        console.log(e);
+        console.log("aaaa");
+      } finally {
+        console.log(updatedList[0]);
+        console.log(fieldsIds);
+        if (fieldsIds.length == updatedList.length && fieldsIds[-1] != undefined) {
+          updateFields({
+            variables: {
+              distributionId: Number(id),
+              fieldIds: fieldsIds,
+            },
+          });
+        }
+      }
+      
+    }
+  }, [newFields && cursor]);
+
+  function a() {
+    updateFields({
+      variables: {
+        distributionId: Number(id),
+        fieldIds: fieldsIds,
+      },
+    });
+  }
+
+  useEffect(() => {
+    if (createdTextField) {
+      let updatedList = newFields;
+      updatedList[cursor] = createdTextField.createTextField;
+      updatedList[cursor].type = FieldType.Text;
+      setNewFields(updatedList);
+    }
+  }, [cursor]);
+
+  function save() {
+    newFields.map((field, i) => {
+      field.type === FieldType.Text
+        ? (
+          textField({
+            variables: {
+              required: field.required,
+              question: field.question,
+            },
+          })
+        )
+        : (() => {
+          choiceField({
+            variables: {
+              required: field.required,
+              question: field.question,
+              multiple: (field as ChoiceField).multiple,
+              options: (field as ChoiceField).options,
+            },
+          });
+          if (createdChoiceField) {
+            field = createdChoiceField;
+          }
+        });
+    });
+
+    // if (cursor+1 == newFields.length) {
+    //   updateFields({
+    //     variables: {
+    //       distributionId: Number(id),
+    //       fieldIds: fieldsIds
+    //     }
+    //   })
+    // }
+  }
 
   function createChoiceField() {
-    setIsOpen(false);
-    // choiceField({
-    //   variables: {
-    //     required: false,
-    //     question: "Question",
-    //     multiple: false,
-    //     options: ["A", "B", "C"],
-    //   },
-    // });
-    // if (choice) {
+    closeModal();
     type ChoiceFieldNew = Pick<
       ChoiceField,
       "multiple" | "options" | "question" | "required"
     >;
     let updatedList = fields;
-    console.log(updatedList)
     let field: ChoiceFieldNew = {
       multiple: false,
       options: ["A", "B", "C"],
       question: "Question",
       required: true,
     };
-    console.log(field)
-    updatedList.push(field as ChoiceField);
+    let newField: ChoiceField[] = [field as ChoiceField];
+    updatedList = updatedList.concat(newField);
     setFields(updatedList);
-    // let fieldsIds = updatedList.map((field) => {
-    //   return field.id;
-    // });
-    // updateFields({
-    //   variables: {
-    //     distributionId: Number(id),
-    //     fieldIds: fieldsIds,
-    //   },
-    // });
-    //}
-    console.log(fields);
+    setNewFields(newFields.concat(newField));
   }
 
   function createTextField() {
-    closeModal()
-    textField({
-      variables: {
-        required: false,
-        question: "Question",
-      },
-    });
-    refetch({ distributionId: Number(id) });
+    closeModal();
+    type TextFieldNew = Pick<
+      TextField,
+      "question" | "required"
+    >;
+    let updatedList = fields;
+    let field: TextFieldNew = {
+      question: "Question",
+      required: true,
+    };
+    let newField: TextField[] = [field as TextField];
+    newField[0].type = FieldType.Text;
+    updatedList = updatedList.concat(newField);
+    setFields(updatedList);
+    setNewFields(newFields.concat(newField));
   }
 
   function openModal() {
@@ -97,7 +192,7 @@ export default function CurrentDistribution() {
     setIsOpen(false);
   }
 
-  const { data, error, loading, refetch } = useQuery<{
+  const { data, error, loading } = useQuery<{
     distribution: Distribution;
     me: User;
   }>(GET_DISTRIBUTION, {
@@ -168,7 +263,7 @@ export default function CurrentDistribution() {
                     </button>
                     <button
                       className="w-40 inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                      onClick={createTextField}
+                      onClick={() => createTextField()}
                     >
                       Text Question
                     </button>
@@ -190,13 +285,13 @@ export default function CurrentDistribution() {
             <div className="font-extralight text-xl">
               <p>{data.distribution.name}</p>
               <p className="text-sm opacity-40">
-                {data.distribution.fieldCount} questions
+                {fields.length} questions
               </p>
             </div>
             {data.distribution.state == DistributionState.Preparing
               ? (
                 <div className="flex">
-                  <button onClick={() => window.location.reload()}>
+                  <button onClick={() => save()}>
                     <Button text="Save" />
                   </button>
                   <button
@@ -238,6 +333,9 @@ export default function CurrentDistribution() {
                       sample={(field as TextField).sample}
                       required={field.required}
                       format={(field as TextField).format}
+                      fields={fields}
+                      id={field.id}
+                      distributionId={Number(id)}
                     />
                   )
                   : (
@@ -259,7 +357,7 @@ export default function CurrentDistribution() {
                 state={data.distribution.state}
                 participants={(data.distribution as GatheringDistribution)
                   .participantCount}
-                  id={data.distribution.id}
+                id={data.distribution.id}
               />
             </div>
           </div>

@@ -70,6 +70,16 @@ export const CREATE_TEXT_FIELD = gql`
 mutation CreateTextField($required: Boolean!, $question: String!) {
   createTextField(required: $required, question: $question) {
     id
+    type
+    creator {
+      id
+    }
+    required
+    question
+    format
+    sample
+    answerCount
+    createdAt
   }
 }
 `;
