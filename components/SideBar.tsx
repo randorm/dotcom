@@ -96,22 +96,28 @@ export default function SideBar({ state, participants, id }: ISideBar) {
                     as="h3"
                     className="text-lg font-medium leading-6 text-gray-900"
                   >
-                    Delete distribution
+                    {state == DistributionState.Preparing
+                      ? "Delete distribution"
+                      : "Use this link to open feed"}
                   </Dialog.Title>
-                  <div className="mt-2">
+                  <div className="mt-2 select-all">
                     <p className="text-sm text-gray-500">
-                      Are you sure? These action cannot be prevented.
+                      {state == DistributionState.Preparing
+                        ? "Are you sure? These action cannot be prevented."
+                        : `https://t.me/randorm_bot?start=${id}`}
                     </p>
                   </div>
-
-                  <div className="mt-4 flex justify-around">
-                    <button
-                      className=" w-40 inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                      onClick={() => deleteDistribution()}
-                    >
-                      Delete
-                    </button>
-                  </div>
+                  {state == DistributionState.Preparing &&
+                    (
+                      <div className="mt-4 flex justify-around">
+                        <button
+                          className=" w-40 inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                          onClick={() => deleteDistribution()}
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    )}
                 </Dialog.Panel>
               </Transition.Child>
             </div>
@@ -177,9 +183,10 @@ export default function SideBar({ state, participants, id }: ISideBar) {
               : state != DistributionState.Closed
               ? (
                 <div className={"shareBtn"}>
-                  <p className={`text-blue-400 text-sm font-extralight`}>
+                  <button className={`text-blue-400 text-sm font-extralight`}
+                  onClick={openModal}>
                     Share
-                  </p>
+                  </button>
                 </div>
               )
               : <></>}
