@@ -26,6 +26,7 @@ import {
   CREATE_CHOICE_FIELD,
   CREATE_TEXT_FIELD,
   UPDATE_DISTRIBUTION_FIELDS,
+  UPDATE_DISTRIBUTION_NAME,
 } from "@/graphql/mutations";
 
 export default function CurrentDistribution() {
@@ -33,10 +34,17 @@ export default function CurrentDistribution() {
   const { id } = router.query;
   const [isOpen, setIsOpen] = useState(false);
   const [cursor, setCursor] = useState(-1);
+  const [name, setName] = useState("");
   const [fields, setFields] = useState<Field[]>([]);
   const [newFields, setNewFields] = useState<Field[]>([]);
+  const [newName] = useMutation(UPDATE_DISTRIBUTION_NAME)
   const [choiceField, { data: createdChoiceField }] = useMutation(
     CREATE_CHOICE_FIELD,
+    {
+      onCompleted() {
+        setCursor(cursor + 1);
+      },
+    },
   );
   const [textField, { data: createdTextField }] = useMutation(
     CREATE_TEXT_FIELD,
@@ -46,7 +54,7 @@ export default function CurrentDistribution() {
       },
     },
   );
-  const [updateFields, { error: g }] = useMutation(
+  const [updateFields] = useMutation(
     UPDATE_DISTRIBUTION_FIELDS,
     {
       onCompleted() {
@@ -55,64 +63,53 @@ export default function CurrentDistribution() {
     },
   );
   let fieldsIds: number[] = [];
+
   useEffect(() => {
-    console.log("in new");
-    console.log(cursor);
-    console.log(newFields.length);
+    let updatedList = newFields;
+    if (createdTextField) {
+      updatedList[cursor] = createdTextField.createTextField;
+      updatedList[cursor].type = FieldType.Text;
+    }
+
+    if (createdChoiceField) {
+      updatedList[cursor] = createdChoiceField.createChoiceField;
+      updatedList[cursor].type = FieldType.Choice;
+    }
+
     if (cursor + 1 == newFields.length && newFields.length != 0) {
-      console.log("in new deeper");
-      let updatedList = fields.slice(0, fields.length - newFields.length);
+      updatedList = fields.slice(0, fields.length - newFields.length);
 
       if (updatedList.length == 0) {
         updatedList = newFields;
       } else {
         updatedList = updatedList.concat(newFields);
       }
-      console.log(JSON.stringify(updatedList))
-      console.log(JSON.stringify(updatedList[0]))
-      try {
-        fieldsIds = updatedList.map((field) => {
-          return field.id;
+      fieldsIds = updatedList.map((field) => {
+        return field.id;
+      });
+
+      if (
+        fieldsIds.length == updatedList.length
+      ) {
+        updateFields({
+          variables: {
+            distributionId: Number(id),
+            fieldIds: fieldsIds,
+          },
         });
-      } catch(e) {
-        console.log(e);
-        console.log("aaaa");
-      } finally {
-        console.log(updatedList[0]);
-        console.log(fieldsIds);
-        if (fieldsIds.length == updatedList.length && fieldsIds[-1] != undefined) {
-          updateFields({
-            variables: {
-              distributionId: Number(id),
-              fieldIds: fieldsIds,
-            },
-          });
-        }
       }
-      
     }
-  }, [newFields && cursor]);
-
-  function a() {
-    updateFields({
-      variables: {
-        distributionId: Number(id),
-        fieldIds: fieldsIds,
-      },
-    });
-  }
-
-  useEffect(() => {
-    if (createdTextField) {
-      let updatedList = newFields;
-      updatedList[cursor] = createdTextField.createTextField;
-      updatedList[cursor].type = FieldType.Text;
-      setNewFields(updatedList);
-    }
-  }, [cursor]);
+  }, [newFields, cursor]);
 
   function save() {
-    newFields.map((field, i) => {
+    newName({
+      variables: {
+        distributionId: Number(id),
+        name: name,
+      }
+    })
+
+    newFields.map((field) => {
       field.type === FieldType.Text
         ? (
           textField({
@@ -122,7 +119,7 @@ export default function CurrentDistribution() {
             },
           })
         )
-        : (() => {
+        : (
           choiceField({
             variables: {
               required: field.required,
@@ -130,21 +127,9 @@ export default function CurrentDistribution() {
               multiple: (field as ChoiceField).multiple,
               options: (field as ChoiceField).options,
             },
-          });
-          if (createdChoiceField) {
-            field = createdChoiceField;
-          }
-        });
+          })
+        );
     });
-
-    // if (cursor+1 == newFields.length) {
-    //   updateFields({
-    //     variables: {
-    //       distributionId: Number(id),
-    //       fieldIds: fieldsIds
-    //     }
-    //   })
-    // }
   }
 
   function createChoiceField() {
@@ -161,6 +146,7 @@ export default function CurrentDistribution() {
       required: true,
     };
     let newField: ChoiceField[] = [field as ChoiceField];
+    newField[0].type = FieldType.Choice;
     updatedList = updatedList.concat(newField);
     setFields(updatedList);
     setNewFields(newFields.concat(newField));
@@ -202,6 +188,7 @@ export default function CurrentDistribution() {
   useEffect(() => {
     if (data) {
       setFields(data.distribution.fields);
+      setName(data.distribution.name);
     }
   }, [data]);
 
@@ -283,7 +270,7 @@ export default function CurrentDistribution() {
         <div className="grid justify-items-center">
           <div className="grid grid-cols-2 mb-4 gap-x-150">
             <div className="font-extralight text-xl">
-              <p>{data.distribution.name}</p>
+              <input defaultValue={name}  onChange={(e) => setName(e.target.value)}/>
               <p className="text-sm opacity-40">
                 {fields.length} questions
               </p>

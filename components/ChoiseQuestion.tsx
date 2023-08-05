@@ -16,23 +16,30 @@ export interface IChoiceQuestion {
 }
 
 export default function ChoiseQuestion(
-  { question, options, required, multiple, fields, id, distributionId }: IChoiceQuestion,
+  { question, options, required, multiple, fields, id, distributionId }:
+    IChoiceQuestion,
 ) {
   const [checked, setChecked] = useState(false);
   const [questionText, setQuestionText] = useState("");
   const [selectedChoice, setSelectedChoice] = useState("");
-  const [updateFields] = useMutation(UPDATE_DISTRIBUTION_FIELDS);
+  const [updateFields] = useMutation(UPDATE_DISTRIBUTION_FIELDS, {
+    onCompleted() {
+      window.location.reload();
+    },
+  });
 
-function deleteField() {
-  let updatedList = fields.filter((field) => field.id != id);  
-  let fieldsIds = updatedList.map((field) => {return field.id})
-  updateFields({
-    variables: {
-      distributionId: distributionId,
-      fieldIds: fieldsIds
-    }
-  })
-}
+  function deleteField() {
+    let updatedList = fields.filter((field) => field.id != id);
+    let fieldsIds = updatedList.map((field) => {
+      return field.id;
+    });
+    updateFields({
+      variables: {
+        distributionId: distributionId,
+        fieldIds: fieldsIds,
+      },
+    });
+  }
 
   useEffect(() => {
     setChecked(required);
@@ -55,7 +62,9 @@ function deleteField() {
         />
         <div className="ml-4 grid grid-cols-3 gap-1">
           <img src="../swap.svg" alt="" />
-          <button onClick={deleteField}><Delete /></button>
+          <button onClick={deleteField}>
+            <Delete />
+          </button>
         </div>
       </div>
       <div className="grid grid-cols-2 gap-52 p-1">
@@ -75,9 +84,17 @@ function deleteField() {
             <div className="ml-1 text-sm">Required</div>
           </div>
           <div className="flex items-center align-middle">
-            <select className="bg-whight" onChange={(e) => setSelectedChoice(e.target.value)} defaultValue={multiple ? "multiple" : "single"}>
-              <option className="ml-1 text-sm" value="multiple">Multiple choice</option>
-              <option className="ml-1 text-sm" value="single">Single choice</option>
+            <select
+              className="bg-whight"
+              onChange={(e) => setSelectedChoice(e.target.value)}
+              defaultValue={multiple ? "multiple" : "single"}
+            >
+              <option className="ml-1 text-sm" value="multiple">
+                Multiple choice
+              </option>
+              <option className="ml-1 text-sm" value="single">
+                Single choice
+              </option>
             </select>
           </div>
         </div>

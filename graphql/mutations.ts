@@ -97,3 +97,12 @@ mutation UpdateDistributionState($distributionId: Int!, $state: DistributionStat
   }
 }
 `;
+
+export const UPDATE_DISTRIBUTION_NAME = gql`
+
+mutation UpdateDistributionName($distributionId: Int!, $name: String!) {
+  updateDistributionName(distributionId: $distributionId, name: $name) {
+    name
+  }
+}
+`;
