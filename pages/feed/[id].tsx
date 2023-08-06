@@ -1,5 +1,6 @@
 import Bio from "@/components/Bio";
 import EmptyFeed from "@/components/EmptyFeed";
+import FinishedDistribution from "@/components/FinishedDistribution";
 import LeftArrow from "@/components/LeftArrow";
 import Loading from "@/components/Loading";
 import { ChoiceQuestion, TextQuestion } from "@/components/Question";
@@ -57,6 +58,10 @@ export default function Feed() {
   }
   if (!data) {
     return <EmptyFeed />;
+  }
+
+  if (Date.now() != new Date(2023, 3, 1, 10, 30, 0, 0).getMilliseconds()) {
+    return <FinishedDistribution />
   }
 
   return (
